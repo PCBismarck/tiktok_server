@@ -46,7 +46,7 @@ func _favoriteMw() []app.HandlerFunc {
 	return nil
 }
 
-func _actioMw() []app.HandlerFunc {
+func _action0Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
@@ -126,7 +126,7 @@ func _messageMw() []app.HandlerFunc {
 	return nil
 }
 
-func _action0Mw() []app.HandlerFunc {
+func _action1Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
@@ -151,7 +151,7 @@ func _publishMw() []app.HandlerFunc {
 	return nil
 }
 
-func _action1Mw() []app.HandlerFunc {
+func _action2Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
@@ -186,7 +186,7 @@ func _relationMw() []app.HandlerFunc {
 	return nil
 }
 
-func _action2Mw() []app.HandlerFunc {
+func _action3Mw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
