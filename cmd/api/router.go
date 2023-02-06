@@ -3,7 +3,7 @@
 package main
 
 import (
-	handler "github.com/PCBismarck/tiktok_server/api/biz/handler"
+	handler "github.com/PCBismarck/tiktok_server/cmd/api/biz/handler"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
