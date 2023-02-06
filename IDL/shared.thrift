@@ -8,7 +8,7 @@ struct User {
     5: required bool is_follow; // true-已关注，false-未关注
 }
 
-struct FriendUser extends User{
+struct FriendUser {
     1: required i64 id; // 用户id
     2: required string name; // 用户名称
     3: optional i64 follow_count; // 关注总数

@@ -1,3 +1,5 @@
+include "shared.thrift"
+
 namespace go interaction
 
 // favorite
@@ -18,7 +20,7 @@ struct FavoriteListRequest {
 struct FavoriteListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
     2: optional string statusMsg // 返回状态描述
-    3: list<video> videoList // 用户点赞视频列表
+    3: list<shared.Video> videoList // 用户点赞视频列表
 }
 // comment
 struct CommentActionRequest {
@@ -31,7 +33,7 @@ struct CommentActionRequest {
 struct CommentActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
     2: optional string statusMsg // 返回状态描述
-    3: optional comment comment // 评论成功返回评论内容，不需要重新拉取整个列表
+    3: optional shared.Comment comment // 评论成功返回评论内容，不需要重新拉取整个列表
 }
 // comment list
 struct CommentListRequest {
@@ -41,5 +43,5 @@ struct CommentListRequest {
 struct CommentListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
     2: optional string statusMsg // 返回状态描述
-    3: list<comment> commentList // 评论列表
+    3: list<shared.Comment> commentList // 评论列表
 }
