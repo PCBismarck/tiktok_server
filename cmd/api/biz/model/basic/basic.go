@@ -532,8 +532,8 @@ func (p *FeedResponse) String() string {
 
 // register
 type UserRegisterRequest struct {
-	Username string `thrift:"username,1" json:"username" query:"username"`
-	Password string `thrift:"password,2" json:"password" query:"password"`
+	Username string `thrift:"username,1" json:"username" query:"username" vd:"len($)<=32"`
+	Password string `thrift:"password,2" json:"password" query:"password" vd:"len($)<=32"`
 }
 
 func NewUserRegisterRequest() *UserRegisterRequest {
