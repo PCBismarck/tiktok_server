@@ -6,6 +6,7 @@ import (
 	"context"
 
 	basic "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -72,8 +73,8 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(basic.UserLoginResponse)
-	rpc.userClient.Login()
+	// resp := new(basic.UserLoginResponse)
+	resp := rpc.Login(context.Background(), req)
 	c.JSON(consts.StatusOK, resp)
 }
 

@@ -3,10 +3,12 @@
 package main
 
 import (
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
 func main() {
+	rpc.Init()
 	h := server.Default()
 
 	register(h)

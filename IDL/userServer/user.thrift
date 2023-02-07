@@ -14,8 +14,8 @@ struct BaseResp {
 }
 
 struct CreateUserRequest {
-    1: string username //(vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
-    2: string password //(vt.min_size = "5")
+    1: string username (vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
+    2: string password (vt.min_size = "5")
 }
 
 struct CreateUserResponse {
@@ -25,8 +25,8 @@ struct CreateUserResponse {
 }
 
 struct LoginRequest {
-    1: string username //(vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
-    2: string password //(vt.min_size = "5")
+    1: string username (vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
+    2: string password (vt.min_size = "5")
 }
 
 struct LoginResponse {
