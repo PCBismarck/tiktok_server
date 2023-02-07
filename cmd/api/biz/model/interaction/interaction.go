@@ -10,9 +10,9 @@ import (
 
 // favorite
 type FavoriteActionRequest struct {
-	Token      string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	VideoId    int64  `thrift:"videoId,2" form:"videoId" json:"videoId" query:"videoId"`
-	ActionType int32  `thrift:"actionType,3" form:"actionType" json:"actionType" query:"actionType"`
+	Token      string `thrift:"token,1" json:"token" query:"token"`
+	VideoId    int64  `thrift:"videoId,2" json:"videoId" query:"video_id"`
+	ActionType int32  `thrift:"actionType,3" json:"actionType" query:"action_type"`
 }
 
 func NewFavoriteActionRequest() *FavoriteActionRequest {
@@ -434,8 +434,8 @@ func (p *FavoriteActionResponse) String() string {
 
 // favorite list
 type FavoriteListRequest struct {
-	UserId int64  `thrift:"userId,1" form:"userId" json:"userId" query:"userId"`
-	Token  string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	UserId int64  `thrift:"userId,1" json:"userId" query:"user_id"`
+	Token  string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewFavoriteListRequest() *FavoriteListRequest {
@@ -877,11 +877,11 @@ func (p *FavoriteListResponse) String() string {
 
 // comment
 type CommentActionRequest struct {
-	Token       string  `thrift:"token,1" form:"token" json:"token" query:"token"`
-	VideoId     int64   `thrift:"videoId,2" form:"videoId" json:"videoId" query:"videoId"`
-	ActionType  int32   `thrift:"actionType,3" form:"actionType" json:"actionType" query:"actionType"`
-	CommentText *string `thrift:"commentText,4,optional" form:"commentText" json:"commentText,omitempty" query:"commentText"`
-	CommentId   *int64  `thrift:"commentId,5,optional" form:"commentId" json:"commentId,omitempty" query:"commentId"`
+	Token       string  `thrift:"token,1" json:"token" query:"token"`
+	VideoId     int64   `thrift:"videoId,2" json:"videoId" query:"video_id"`
+	ActionType  int32   `thrift:"actionType,3" json:"actionType" query:"action_type"`
+	CommentText *string `thrift:"commentText,4,optional" json:"commentText,omitempty" query:"comment_text"`
+	CommentId   *int64  `thrift:"commentId,5,optional" json:"commentId,omitempty" query:"comment_id"`
 }
 
 func NewCommentActionRequest() *CommentActionRequest {
@@ -1471,8 +1471,8 @@ func (p *CommentActionResponse) String() string {
 
 // comment list
 type CommentListRequest struct {
-	Token   string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	VideoId int64  `thrift:"videoId,2" form:"videoId" json:"videoId" query:"videoId"`
+	Token   string `thrift:"token,1" json:"token" query:"token"`
+	VideoId int64  `thrift:"videoId,2" json:"videoId" query:"video_id"`
 }
 
 func NewCommentListRequest() *CommentListRequest {

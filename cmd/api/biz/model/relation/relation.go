@@ -10,9 +10,9 @@ import (
 
 // relation action
 type RelationActionRequest struct {
-	Token      string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	ToUserId   int64  `thrift:"toUserId,2" form:"toUserId" json:"toUserId" query:"toUserId"`
-	ActionType int32  `thrift:"actionType,3" form:"actionType" json:"actionType" query:"actionType"`
+	Token      string `thrift:"token,1" json:"token" query:"token"`
+	ToUserId   int64  `thrift:"toUserId,2" json:"toUserId" query:"to_user_id"`
+	ActionType int32  `thrift:"actionType,3" json:"actionType" query:"action_type"`
 }
 
 func NewRelationActionRequest() *RelationActionRequest {
@@ -434,8 +434,8 @@ func (p *RelationActionResponse) String() string {
 
 // follow list
 type RelationFollowListRequest struct {
-	UserId int64  `thrift:"userId,1" form:"userId" json:"userId" query:"userId"`
-	Token  string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	UserId int64  `thrift:"userId,1" json:"userId" query:"user_id"`
+	Token  string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewRelationFollowListRequest() *RelationFollowListRequest {
@@ -877,8 +877,8 @@ func (p *RelationFollowListResponse) String() string {
 
 // follower list
 type RelationFollowerListRequest struct {
-	UserId int64  `thrift:"userId,1" form:"userId" json:"userId" query:"userId"`
-	Token  string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	UserId int64  `thrift:"userId,1" json:"userId" query:"user_id"`
+	Token  string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewRelationFollowerListRequest() *RelationFollowerListRequest {
@@ -1320,8 +1320,8 @@ func (p *RelationFollowerListResponse) String() string {
 
 // friend list
 type RelationFriendListRequest struct {
-	UserId int64  `thrift:"userId,1" form:"userId" json:"userId" query:"userId"`
-	Token  string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	UserId int64  `thrift:"userId,1" json:"userId" query:"user_id"`
+	Token  string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewRelationFriendListRequest() *RelationFriendListRequest {
@@ -1763,8 +1763,8 @@ func (p *RelationFriendListResponse) String() string {
 
 // chat list
 type MessageChatRequest struct {
-	Token    string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	ToUserId int64  `thrift:"toUserId,2" form:"toUserId" json:"toUserId" query:"toUserId"`
+	Token    string `thrift:"token,1" json:"token" query:"token"`
+	ToUserId int64  `thrift:"toUserId,2" json:"toUserId" query:"to_user_id"`
 }
 
 func NewMessageChatRequest() *MessageChatRequest {
@@ -2206,10 +2206,10 @@ func (p *MessageChatResponse) String() string {
 
 // message cation
 type MessageActionRequest struct {
-	Token      string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	ToUserId   int64  `thrift:"toUserId,2" form:"toUserId" json:"toUserId" query:"toUserId"`
-	ActionType int32  `thrift:"actionType,3" form:"actionType" json:"actionType" query:"actionType"`
-	Content    string `thrift:"content,4" form:"content" json:"content" query:"content"`
+	Token      string `thrift:"token,1" json:"token" query:"token"`
+	ToUserId   int64  `thrift:"toUserId,2" json:"toUserId" query:"to_user_id"`
+	ActionType int32  `thrift:"actionType,3" json:"actionType" query:"action_type"`
+	Content    string `thrift:"content,4" json:"content" query:"content"`
 }
 
 func NewMessageActionRequest() *MessageActionRequest {

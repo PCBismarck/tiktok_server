@@ -4,8 +4,8 @@ namespace go basic
 
 // feed 
 struct FeedRequest {
-    1: optional i64 latestTime // 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
-    2: optional string token // 可选参数，登录用户设置
+    1: optional i64 latestTime (api.query="latest_time")// 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
+    2: optional string token (api.query="token")// 可选参数，登录用户设置
 }
 struct FeedResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -16,8 +16,8 @@ struct FeedResponse {
 
 // register
 struct UserRegisterRequest {
-    1: string username // 注册用户名，最长32个字符
-    2: string password // 密码，最长32个字符
+    1: string username (api.query="username", api.vd="len($)<=32")// 注册用户名，最长32个字符
+    2: string password (api.query="password", api.vd="len($)<=32")// 密码，最长32个字符
 }
 struct UserRegisterResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -28,8 +28,8 @@ struct UserRegisterResponse {
 
 // login
 struct UserLoginRequest {
-    1: string username // 登录用户名
-    2: string password // 登录密码
+    1: string username (api.query="username")// 登录用户名
+    2: string password (api.query="password")// 登录密码
 }
 struct UserLoginResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -40,8 +40,8 @@ struct UserLoginResponse {
 
 //user info
 struct UserRequest {
-    1: i64 userId // 用户id
-    2: string token // 用户鉴权token
+    1: i64 userId (api.query="user_id")// 用户id
+    2: string token (api.query="token")// 用户鉴权token
 }
 struct UserResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -51,9 +51,9 @@ struct UserResponse {
 
 // publish
 struct PublishActionRequest {
-    1: string token // 用户鉴权token
+    1: string token (api.query="token")// 用户鉴权token
     2: binary data // 视频数据
-    3: string title // 视频标题
+    3: string title (api.query="title")// 视频标题
 }
 struct PublishActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -62,8 +62,8 @@ struct PublishActionResponse {
 
 // publish list
 struct PublishListRequest {
-    1: i64 userId // 用户id
-    2: string token // 用户鉴权token
+    1: i64 userId (api.query="user_id")// 用户id
+    2: string token (api.query="token")// 用户鉴权token
 }
 struct PublishListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败

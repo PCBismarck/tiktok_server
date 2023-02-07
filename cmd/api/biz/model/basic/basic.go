@@ -10,8 +10,8 @@ import (
 
 // feed
 type FeedRequest struct {
-	LatestTime *int64  `thrift:"latestTime,1,optional" form:"latestTime" json:"latestTime,omitempty" query:"latestTime"`
-	Token      *string `thrift:"token,2,optional" form:"token" json:"token,omitempty" query:"token"`
+	LatestTime *int64  `thrift:"latestTime,1,optional" json:"latestTime,omitempty" query:"latest_time"`
+	Token      *string `thrift:"token,2,optional" json:"token,omitempty" query:"token"`
 }
 
 func NewFeedRequest() *FeedRequest {
@@ -532,8 +532,8 @@ func (p *FeedResponse) String() string {
 
 // register
 type UserRegisterRequest struct {
-	Username string `thrift:"username,1" form:"username" json:"username" query:"username"`
-	Password string `thrift:"password,2" form:"password" json:"password" query:"password"`
+	Username string `thrift:"username,1" json:"username" query:"username"`
+	Password string `thrift:"password,2" json:"password" query:"password"`
 }
 
 func NewUserRegisterRequest() *UserRegisterRequest {
@@ -1002,8 +1002,8 @@ func (p *UserRegisterResponse) String() string {
 
 // login
 type UserLoginRequest struct {
-	Username string `thrift:"username,1" form:"username" json:"username" query:"username"`
-	Password string `thrift:"password,2" form:"password" json:"password" query:"password"`
+	Username string `thrift:"username,1" json:"username" query:"username"`
+	Password string `thrift:"password,2" json:"password" query:"password"`
 }
 
 func NewUserLoginRequest() *UserLoginRequest {
@@ -1472,8 +1472,8 @@ func (p *UserLoginResponse) String() string {
 
 //user info
 type UserRequest struct {
-	UserId int64  `thrift:"userId,1" form:"userId" json:"userId" query:"userId"`
-	Token  string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	UserId int64  `thrift:"userId,1" json:"userId" query:"user_id"`
+	Token  string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewUserRequest() *UserRequest {
@@ -1904,9 +1904,9 @@ func (p *UserResponse) String() string {
 
 // publish
 type PublishActionRequest struct {
-	Token string `thrift:"token,1" form:"token" json:"token" query:"token"`
+	Token string `thrift:"token,1" json:"token" query:"token"`
 	Data  []byte `thrift:"data,2" form:"data" json:"data" query:"data"`
-	Title string `thrift:"title,3" form:"title" json:"title" query:"title"`
+	Title string `thrift:"title,3" json:"title" query:"title"`
 }
 
 func NewPublishActionRequest() *PublishActionRequest {
@@ -2328,8 +2328,8 @@ func (p *PublishActionResponse) String() string {
 
 // publish list
 type PublishListRequest struct {
-	UserId int64  `thrift:"userId,1" form:"userId" json:"userId" query:"userId"`
-	Token  string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	UserId int64  `thrift:"userId,1" json:"userId" query:"user_id"`
+	Token  string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewPublishListRequest() *PublishListRequest {

@@ -23,8 +23,8 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 
 	resp := new(basic.FeedResponse)
 	resp.StatusCode = consts.StatusOK
-	msg := "hello!!!"
-	resp.StatusMsg = &msg
+	msg := req.Token
+	resp.StatusMsg = msg
 
 	c.JSON(consts.StatusOK, resp)
 }

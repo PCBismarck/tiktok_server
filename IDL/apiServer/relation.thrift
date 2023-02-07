@@ -4,9 +4,9 @@ namespace go relation
 
 // relation action
 struct RelationActionRequest {
-    1: string token // 用户鉴权token
-    2: i64 toUserId // 对方用户id
-    3: i32 actionType // 1-关注，2-取消关注
+    1: string token (api.query="token") // 用户鉴权token
+    2: i64 toUserId (api.query="to_user_id") // 对方用户id
+    3: i32 actionType (api.query="action_type") // 1-关注，2-取消关注
 }
 
 struct RelationActionResponse {
@@ -16,8 +16,8 @@ struct RelationActionResponse {
 
 // follow list
 struct RelationFollowListRequest {
-    1: i64 userId // 用户id
-    2: string token // 用户鉴权token
+    1: i64 userId (api.query="user_id") // 用户id
+    2: string token (api.query="token") // 用户鉴权token
 }
 
 struct RelationFollowListResponse {
@@ -28,8 +28,8 @@ struct RelationFollowListResponse {
 
 // follower list
 struct RelationFollowerListRequest {
-    1: i64 userId // 用户id
-    2: string token // 用户鉴权token
+    1: i64 userId (api.query="user_id") // 用户id
+    2: string token (api.query="token") // 用户鉴权token
 }
 
 struct RelationFollowerListResponse {
@@ -40,8 +40,8 @@ struct RelationFollowerListResponse {
 
 // friend list
 struct RelationFriendListRequest {
-    1: i64 userId // 用户id
-    2: string token // 用户鉴权token
+    1: i64 userId (api.query="user_id") // 用户id
+    2: string token (api.query="token") // 用户鉴权token
 }
 
 struct RelationFriendListResponse {
@@ -52,8 +52,8 @@ struct RelationFriendListResponse {
 
 // chat list
 struct MessageChatRequest {
-    1: string token // 用户鉴权token
-    2: i64 toUserId // 对方用户id
+    1: string token (api.query="token") // 用户鉴权token
+    2: i64 toUserId (api.query="to_user_id") // 对方用户id
 }
 
 struct MessageChatResponse {
@@ -65,10 +65,10 @@ struct MessageChatResponse {
 
 // message cation
 struct MessageActionRequest {
-    1: string token // 用户鉴权token
-    2: i64 toUserId // 对方用户id
-    3: i32 actionType // 1-发送消息
-    4: string content // 消息内容
+    1: string token (api.query="token") // 用户鉴权token
+    2: i64 toUserId (api.query="to_user_id") // 对方用户id
+    3: i32 actionType (api.query="action_type") // 1-发送消息
+    4: string content (api.query="content")// 消息内容
 }
 
 struct MessageActionResponse {

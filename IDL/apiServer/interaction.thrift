@@ -4,9 +4,9 @@ namespace go interaction
 
 // favorite
 struct FavoriteActionRequest {
-    1: string token // 用户鉴权token
-    2: i64 videoId // 视频id
-    3: i32 actionType // 1-点赞，2-取消点赞
+    1: string token (api.query="token")// 用户鉴权token
+    2: i64 videoId (api.query="video_id")// 视频id
+    3: i32 actionType (api.query="action_type")// 1-点赞，2-取消点赞
 }
 struct FavoriteActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -14,8 +14,8 @@ struct FavoriteActionResponse {
 }
 // favorite list
 struct FavoriteListRequest {
-    1: i64 userId // 用户id
-    2: string token // 用户鉴权token
+    1: i64 userId (api.query="user_id")// 用户id
+    2: string token (api.query="token")// 用户鉴权token
 }
 struct FavoriteListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -24,11 +24,11 @@ struct FavoriteListResponse {
 }
 // comment
 struct CommentActionRequest {
-    1: string token // 用户鉴权token
-    2: i64 videoId // 视频id
-    3: i32 actionType // 1-发布评论，2-删除评论
-    4: optional string commentText // 用户填写的评论内容，在action_type=1的时候使用
-    5: optional i64 commentId // 要删除的评论id，在action_type=2的时候使用
+    1: string token (api.query="token")// 用户鉴权token
+    2: i64 videoId (api.query="video_id")// 视频id
+    3: i32 actionType (api.query="action_type")// 1-发布评论，2-删除评论
+    4: optional string commentText (api.query="comment_text")// 用户填写的评论内容，在action_type=1的时候使用
+    5: optional i64 commentId (api.query="comment_id")// 要删除的评论id，在action_type=2的时候使用
 }
 struct CommentActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
@@ -37,8 +37,8 @@ struct CommentActionResponse {
 }
 // comment list
 struct CommentListRequest {
-    1: string token // 用户鉴权token
-    2: i64 videoId // 视频id
+    1: string token (api.query="token")// 用户鉴权token
+    2: i64 videoId (api.query="video_id")// 视频id
 }
 struct CommentListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
