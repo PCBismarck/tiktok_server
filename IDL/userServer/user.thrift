@@ -14,29 +14,29 @@ struct BaseResp {
 }
 
 struct CreateUserRequest {
-    1: string username (vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
-    2: string password (vt.min_size = "5")
+    1: string username //(vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
+    2: string password //(vt.min_size = "5")
 }
 
 struct CreateUserResponse {
     1: BaseResp base
-    2: string userId
+    2: i64 userId
     3: string token
 }
 
 struct LoginRequest {
-    1: string username (vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
-    2: string password (vt.min_size = "5")
+    1: string username //(vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
+    2: string password //(vt.min_size = "5")
 }
 
 struct LoginResponse {
     1: BaseResp base
-    2: string userId
+    2: i64 userId
     3: string token
 }
 
 struct UserInfoRequest {
-    1: string userId
+    1: i64 userId
     2: string token
 }
 

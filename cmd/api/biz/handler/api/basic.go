@@ -73,7 +73,7 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(basic.UserLoginResponse)
-
+	rpc.userClient.Login()
 	c.JSON(consts.StatusOK, resp)
 }
 

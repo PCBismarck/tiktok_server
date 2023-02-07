@@ -9,20 +9,12 @@ import (
 // UserServiceImpl implements the last service interface defined in the IDL.
 type UserServiceImpl struct{}
 
-type User struct {
-	Id            int64  `json:"id,omitempty"`
-	Name          string `json:"name,omitempty"`
-	FollowCount   int64  `json:"follow_count,omitempty"`
-	FollowerCount int64  `json:"follower_count,omitempty"`
-	IsFollow      bool   `json:"is_follow,omitempty"`
-}
-
-var usersLoginInfo = map[string]User{
+var usersLoginInfo = map[string]user.User{
 	"zhangleidouyin": {
 		Id:            1,
 		Name:          "zhanglei",
-		FollowCount:   10,
-		FollowerCount: 5,
+		FollowCount:   nil,
+		FollowerCount: nil,
 		IsFollow:      true,
 	},
 }
@@ -30,16 +22,14 @@ var usersLoginInfo = map[string]User{
 // CreateUser implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CreateUser(ctx context.Context, req *user.CreateUserRequest) (resp *user.CreateUserResponse, err error) {
 	// TODO: Your code here...
-	token := req.Username + "@" + req.Password
-	resp = new(user.CreateUserResponse)
-	resp.token = token
-
 	return
 }
 
 // Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
 	// TODO: Your code here...
+	resp.UserId = 12345678
+	resp.Token = req.Username + "@" + req.Password
 	return
 }
 

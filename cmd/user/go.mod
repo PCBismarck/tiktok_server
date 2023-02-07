@@ -3,7 +3,7 @@ module github.com/PCBismarck/tiktok_server/cmd/user
 go 1.18
 
 require (
-	github.com/apache/thrift v0.17.0
+	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
 )
 
