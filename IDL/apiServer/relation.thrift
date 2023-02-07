@@ -11,7 +11,7 @@ struct RelationActionRequest {
 
 struct RelationActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
 }
 
 // follow list
@@ -22,7 +22,7 @@ struct RelationFollowListRequest {
 
 struct RelationFollowListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: list<shared.User> userList // 用户信息列表
 }
 
@@ -34,7 +34,7 @@ struct RelationFollowerListRequest {
 
 struct RelationFollowerListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: list<shared.User> userList // 用户列表
 }
 
@@ -46,7 +46,7 @@ struct RelationFriendListRequest {
 
 struct RelationFriendListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: list<shared.FriendUser> userList // 用户列表
 }
 
@@ -58,7 +58,7 @@ struct MessageChatRequest {
 
 struct MessageChatResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: list<shared.Message> messageList // 消息列表
 }
 
@@ -73,5 +73,5 @@ struct MessageActionRequest {
 
 struct MessageActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
 }
