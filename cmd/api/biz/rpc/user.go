@@ -28,11 +28,12 @@ func Login(ctx context.Context, c basic.UserLoginRequest) (resp *basic.UserLogin
 	req.Password = c.Password
 	r, err := userClient.Login(ctx, req)
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Printf("err: %v\n", err)
 	}
+	resp = new(basic.UserLoginResponse)
 	resp.StatusCode = int32(r.Base.StatusCode)
-	resp.StatusMsg = &r.Base.StatusMsg
-	resp.UserId = r.UserId
+	resp.StatusMsg = r.Base.StatusMsg
+	// resp.UserId = r.UserId
 	resp.Token = r.Token
 	return
 }

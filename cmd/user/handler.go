@@ -28,6 +28,7 @@ func (s *UserServiceImpl) CreateUser(ctx context.Context, req *user.CreateUserRe
 // Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
 	// TODO: Your code here...
+	resp = new(user.LoginResponse)
 	resp.UserId = 12345678
 	resp.Token = req.Username + "@" + req.Password
 	return
