@@ -5,6 +5,13 @@ go 1.18
 require (
 	github.com/apache/thrift v0.13.0
 	github.com/cloudwego/kitex v0.4.4
+	gorm.io/gorm v1.24.5
+)
+
+require (
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 )
 
 require (
@@ -33,4 +40,5 @@ require (
 	google.golang.org/genproto v0.0.0-20210513213006-bf773b8c8384 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gorm.io/driver/mysql v1.4.5
 )

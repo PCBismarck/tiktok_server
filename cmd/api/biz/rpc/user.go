@@ -23,10 +23,10 @@ func initUser() {
 
 // call Login in user service
 func Login(ctx context.Context, c basic.UserLoginRequest) (resp *basic.UserLoginResponse) {
-	req := new(user.LoginRequest)
+	req := new(user.VerifyUserRequest)
 	req.Username = c.Username
 	req.Password = c.Password
-	r, err := userClient.Login(ctx, req)
+	r, err := userClient.VerifyUser(ctx, req)
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
 	}
@@ -34,6 +34,6 @@ func Login(ctx context.Context, c basic.UserLoginRequest) (resp *basic.UserLogin
 	resp.StatusCode = int32(r.Base.StatusCode)
 	resp.StatusMsg = r.Base.StatusMsg
 	// resp.UserId = r.UserId
-	resp.Token = r.Token
+	// resp.Token = r.Token
 	return
 }

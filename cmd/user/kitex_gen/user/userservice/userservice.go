@@ -20,7 +20,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
 		"CreateUser": kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
-		"Login":      kitex.NewMethodInfo(loginHandler, newUserServiceLoginArgs, newUserServiceLoginResult, false),
+		"VerifyUser": kitex.NewMethodInfo(verifyUserHandler, newUserServiceVerifyUserArgs, newUserServiceVerifyUserResult, false),
 		"UserInfo":   kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
 	}
 	extra := map[string]interface{}{
@@ -55,22 +55,22 @@ func newUserServiceCreateUserResult() interface{} {
 	return user.NewUserServiceCreateUserResult()
 }
 
-func loginHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*user.UserServiceLoginArgs)
-	realResult := result.(*user.UserServiceLoginResult)
-	success, err := handler.(user.UserService).Login(ctx, realArg.Req)
+func verifyUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceVerifyUserArgs)
+	realResult := result.(*user.UserServiceVerifyUserResult)
+	success, err := handler.(user.UserService).VerifyUser(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newUserServiceLoginArgs() interface{} {
-	return user.NewUserServiceLoginArgs()
+func newUserServiceVerifyUserArgs() interface{} {
+	return user.NewUserServiceVerifyUserArgs()
 }
 
-func newUserServiceLoginResult() interface{} {
-	return user.NewUserServiceLoginResult()
+func newUserServiceVerifyUserResult() interface{} {
+	return user.NewUserServiceVerifyUserResult()
 }
 
 func userInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -111,11 +111,11 @@ func (p *kClient) CreateUser(ctx context.Context, req *user.CreateUserRequest) (
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) Login(ctx context.Context, req *user.LoginRequest) (r *user.LoginResponse, err error) {
-	var _args user.UserServiceLoginArgs
+func (p *kClient) VerifyUser(ctx context.Context, req *user.VerifyUserRequest) (r *user.VerifyUserResponse, err error) {
+	var _args user.UserServiceVerifyUserArgs
 	_args.Req = req
-	var _result user.UserServiceLoginResult
-	if err = p.c.Call(ctx, "Login", &_args, &_result); err != nil {
+	var _result user.UserServiceVerifyUserResult
+	if err = p.c.Call(ctx, "VerifyUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

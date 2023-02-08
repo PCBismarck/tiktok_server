@@ -21,23 +21,20 @@ struct CreateUserRequest {
 struct CreateUserResponse {
     1: BaseResp base
     2: i64 userId
-    3: string token
 }
 
-struct LoginRequest {
+struct VerifyUserRequest {
     1: string username (vt.min_size = "1", vt.pattern = "[0-9A-Za-z]+")
     2: string password (vt.min_size = "5")
 }
 
-struct LoginResponse {
+struct VerifyUserResponse {
     1: BaseResp base
     2: i64 userId
-    3: string token
 }
 
 struct UserInfoRequest {
     1: i64 userId
-    2: string token
 }
 
 struct UserInfoResponse {
@@ -47,6 +44,6 @@ struct UserInfoResponse {
 
 service UserService {
     CreateUserResponse CreateUser (1: CreateUserRequest req)
-    LoginResponse Login (1: LoginRequest req)
+    VerifyUserResponse VerifyUser (1: VerifyUserRequest req)
     UserInfoResponse UserInfo (1: UserInfoRequest req)
 }
