@@ -37,13 +37,24 @@ func (s *UserServiceImpl) CreateUser(ctx context.Context, req *user.CreateUserRe
 func (s *UserServiceImpl) UserInfo(ctx context.Context, req *user.UserInfoRequest) (resp *user.UserInfoResponse, err error) {
 	// TODO: Your code here...
 	resp = new(user.UserInfoResponse)
-	a := dbconfig.GetAccountInfoByUID(req.UserId)
+	a, err := dbconfig.GetAccountInfoByUID(req.UserId)
+	if err != nil {
+		resp.Base = &user.BaseResp{
+			StatusCode: consts.FailureCode,
+			StatusMsg:  "user does not exist",
+		}
+		return
+	}
 	resp.User = &user.User{
 		Id:            int64(a.ID),
 		Name:          a.Username,
 		FollowCount:   &a.FollowCount,
 		FollowerCount: &a.FollowerCount,
 		IsFollow:      false,
+	}
+	resp.Base = &user.BaseResp{
+		StatusCode: consts.SuccessCode,
+		StatusMsg:  "success",
 	}
 	return
 }
@@ -58,6 +69,7 @@ func (s *UserServiceImpl) VerifyUser(ctx context.Context, req *user.VerifyUserRe
 			StatusCode: consts.FailureCode,
 			StatusMsg:  "User does not exist",
 		}
+		err = fmt.Errorf("user does not exist")
 		return
 	}
 	if !ComparePwd(req.Password, a.Salt, a.PasswordMD5) {
@@ -65,6 +77,7 @@ func (s *UserServiceImpl) VerifyUser(ctx context.Context, req *user.VerifyUserRe
 			StatusCode: consts.FailureCode,
 			StatusMsg:  "Wrong Password",
 		}
+		err = fmt.Errorf("wrong password")
 		return
 	}
 	resp.UserId = int64(a.ID)

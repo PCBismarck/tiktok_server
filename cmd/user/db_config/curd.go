@@ -2,8 +2,11 @@ package dbconfig
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 func CreateAccount(username string, password string) (uid int64, err error) {
@@ -32,8 +35,11 @@ func QueryAccount(username string) (user *Account, existed bool) {
 	return &u, true
 }
 
-func GetAccountInfoByUID(uid int64) (a *Account) {
+func GetAccountInfoByUID(uid int64) (a *Account, err error) {
 	var user Account
-	DB.First(&user, uid)
-	return &user
+	res := DB.First(&user, uid)
+	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		return nil, res.Error
+	}
+	return &user, nil
 }

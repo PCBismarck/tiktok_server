@@ -8,6 +8,7 @@ import (
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
+	"github.com/PCBismarck/tiktok_server/cmd/user/db_config/consts"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/hertz-contrib/jwt"
 )
@@ -66,17 +67,9 @@ func InitJWT() {
 		},
 		Unauthorized: func(ctx context.Context, c *app.RequestContext, code int, message string) {
 			c.JSON(http.StatusOK, basic.UserLoginResponse{
-				StatusCode: 1,
+				StatusCode: consts.FailureCode,
 				StatusMsg:  "Unauthorized",
 			})
 		},
-		// HTTPStatusMessageFunc: func(e error	, ctx context.Context, c *app.RequestContext) string {
-		// 	switch t := e.(type) {
-		// 	case errno.ErrNo:
-		// 		return t.ErrMsg
-		// 	default:
-		// 		return t.Error()
-		// 	}
-		// },
 	})
 }

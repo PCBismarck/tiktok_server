@@ -4,7 +4,6 @@ package api
 
 import (
 	"context"
-	"fmt"
 
 	basic "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
@@ -66,7 +65,6 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	mw.JwtMiddleware.LoginHandler(ctx, c)
-	fmt.Println("Register!")
 }
 
 // Login .
