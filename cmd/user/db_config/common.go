@@ -10,9 +10,10 @@ import (
 type Account struct {
 	gorm.Model
 	Username      string `gorm:"unique"`
-	Password      string `gorm:"check: length(password) > 4"`
-	FollowCount   int64  `gorm:"check: follow_count >= 0"`
-	FollowerCount int64  `gorm:"check: follower_count >= 0"`
+	PasswordMD5   string
+	Salt          string
+	FollowCount   int64 `gorm:"check: follow_count >= 0"`
+	FollowerCount int64 `gorm:"check: follower_count >= 0"`
 }
 
 type mysqlConn struct {
@@ -35,11 +36,11 @@ var DB *gorm.DB
 
 func InitDB() {
 	dsn := (&mysqlConn{
-		user:      "tkadmin",
-		pwd:       "123456",
+		user:      "root",
+		pwd:       "douyinDY_123",
 		protocol:  "tcp",
-		address:   "127.0.0.1",
-		dbname:    "tiktok",
+		address:   "101.43.172.154",
+		dbname:    "douyin",
 		port:      "3306",
 		charset:   "utf8mb4",
 		parseTime: "True",

@@ -19,9 +19,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreateUser": kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
-		"VerifyUser": kitex.NewMethodInfo(verifyUserHandler, newUserServiceVerifyUserArgs, newUserServiceVerifyUserResult, false),
-		"UserInfo":   kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
+		"CreateUser":      kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
+		"VerifyUser":      kitex.NewMethodInfo(verifyUserHandler, newUserServiceVerifyUserArgs, newUserServiceVerifyUserResult, false),
+		"UserInfo":        kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
+		"GetIDByUsername": kitex.NewMethodInfo(getIDByUsernameHandler, newUserServiceGetIDByUsernameArgs, newUserServiceGetIDByUsernameResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -91,6 +92,24 @@ func newUserServiceUserInfoResult() interface{} {
 	return user.NewUserServiceUserInfoResult()
 }
 
+func getIDByUsernameHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceGetIDByUsernameArgs)
+	realResult := result.(*user.UserServiceGetIDByUsernameResult)
+	success, err := handler.(user.UserService).GetIDByUsername(ctx, realArg.Username)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newUserServiceGetIDByUsernameArgs() interface{} {
+	return user.NewUserServiceGetIDByUsernameArgs()
+}
+
+func newUserServiceGetIDByUsernameResult() interface{} {
+	return user.NewUserServiceGetIDByUsernameResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -126,6 +145,16 @@ func (p *kClient) UserInfo(ctx context.Context, req *user.UserInfoRequest) (r *u
 	_args.Req = req
 	var _result user.UserServiceUserInfoResult
 	if err = p.c.Call(ctx, "UserInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetIDByUsername(ctx context.Context, username string) (r int64, err error) {
+	var _args user.UserServiceGetIDByUsernameArgs
+	_args.Username = username
+	var _result user.UserServiceGetIDByUsernameResult
+	if err = p.c.Call(ctx, "GetIDByUsername", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

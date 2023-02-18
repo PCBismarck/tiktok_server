@@ -14,6 +14,7 @@ type Client interface {
 	CreateUser(ctx context.Context, req *user.CreateUserRequest, callOptions ...callopt.Option) (r *user.CreateUserResponse, err error)
 	VerifyUser(ctx context.Context, req *user.VerifyUserRequest, callOptions ...callopt.Option) (r *user.VerifyUserResponse, err error)
 	UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error)
+	GetIDByUsername(ctx context.Context, username string, callOptions ...callopt.Option) (r int64, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -58,4 +59,9 @@ func (p *kUserServiceClient) VerifyUser(ctx context.Context, req *user.VerifyUse
 func (p *kUserServiceClient) UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.UserInfo(ctx, req)
+}
+
+func (p *kUserServiceClient) GetIDByUsername(ctx context.Context, username string, callOptions ...callopt.Option) (r int64, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetIDByUsername(ctx, username)
 }

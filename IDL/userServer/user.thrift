@@ -46,4 +46,5 @@ service UserService {
     CreateUserResponse CreateUser (1: CreateUserRequest req)
     VerifyUserResponse VerifyUser (1: VerifyUserRequest req)
     UserInfoResponse UserInfo (1: UserInfoRequest req)
+    i64 GetIDByUsername(1:string username)
 }

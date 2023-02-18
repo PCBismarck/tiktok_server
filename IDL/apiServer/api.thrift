@@ -9,7 +9,7 @@ service Basic{
     // basic apis
     basic.FeedResponse Feed(1: basic.FeedRequest req) (api.get="/douyin/feed/")
     basic.UserResponse UserInfo(1: basic.UserRequest req) (api.get="/douyin/user/")
-    basic.UserRegisterResponse Register(1: basic.UserRegisterRequest req) (api.post="/douyin/register/")
+    basic.UserRegisterResponse Register(1: basic.UserRegisterRequest req) (api.post="/douyin/user/register/")
     basic.UserLoginResponse Login(1: basic.UserLoginRequest req) (api.post="/douyin/user/login/")
     basic.PublishActionResponse Publish(1: basic.PublishActionRequest req) (api.post="/douyin/publish/action/")
     basic.PublishListResponse PublishList(1: basic.PublishListRequest req) (api.get="/douyin/publish/list/")

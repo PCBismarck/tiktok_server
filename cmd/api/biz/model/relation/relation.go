@@ -239,8 +239,8 @@ func (p *RelationActionRequest) String() string {
 }
 
 type RelationActionResponse struct {
-	StatusCode int32   `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusCode int32  `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
+	StatusMsg  string `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 }
 
 func NewRelationActionResponse() *RelationActionResponse {
@@ -251,22 +251,13 @@ func (p *RelationActionResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var RelationActionResponse_StatusMsg_DEFAULT string
-
 func (p *RelationActionResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return RelationActionResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 var fieldIDToName_RelationActionResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
-}
-
-func (p *RelationActionResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *RelationActionResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -351,7 +342,7 @@ func (p *RelationActionResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -407,16 +398,14 @@ WriteFieldEndError:
 }
 
 func (p *RelationActionResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -618,7 +607,7 @@ func (p *RelationFollowListRequest) String() string {
 
 type RelationFollowListResponse struct {
 	StatusCode int32          `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string        `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string         `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	UserList   []*shared.User `thrift:"userList,3" form:"userList" json:"userList" query:"userList"`
 }
 
@@ -630,13 +619,8 @@ func (p *RelationFollowListResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var RelationFollowListResponse_StatusMsg_DEFAULT string
-
 func (p *RelationFollowListResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return RelationFollowListResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *RelationFollowListResponse) GetUserList() (v []*shared.User) {
@@ -647,10 +631,6 @@ var fieldIDToName_RelationFollowListResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "userList",
-}
-
-func (p *RelationFollowListResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *RelationFollowListResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -745,7 +725,7 @@ func (p *RelationFollowListResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -825,16 +805,14 @@ WriteFieldEndError:
 }
 
 func (p *RelationFollowListResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1061,7 +1039,7 @@ func (p *RelationFollowerListRequest) String() string {
 
 type RelationFollowerListResponse struct {
 	StatusCode int32          `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string        `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string         `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	UserList   []*shared.User `thrift:"userList,3" form:"userList" json:"userList" query:"userList"`
 }
 
@@ -1073,13 +1051,8 @@ func (p *RelationFollowerListResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var RelationFollowerListResponse_StatusMsg_DEFAULT string
-
 func (p *RelationFollowerListResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return RelationFollowerListResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *RelationFollowerListResponse) GetUserList() (v []*shared.User) {
@@ -1090,10 +1063,6 @@ var fieldIDToName_RelationFollowerListResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "userList",
-}
-
-func (p *RelationFollowerListResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *RelationFollowerListResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -1188,7 +1157,7 @@ func (p *RelationFollowerListResponse) ReadField2(iprot thrift.TProtocol) error 
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -1268,16 +1237,14 @@ WriteFieldEndError:
 }
 
 func (p *RelationFollowerListResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1504,7 +1471,7 @@ func (p *RelationFriendListRequest) String() string {
 
 type RelationFriendListResponse struct {
 	StatusCode int32                `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string              `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string               `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	UserList   []*shared.FriendUser `thrift:"userList,3" form:"userList" json:"userList" query:"userList"`
 }
 
@@ -1516,13 +1483,8 @@ func (p *RelationFriendListResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var RelationFriendListResponse_StatusMsg_DEFAULT string
-
 func (p *RelationFriendListResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return RelationFriendListResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *RelationFriendListResponse) GetUserList() (v []*shared.FriendUser) {
@@ -1533,10 +1495,6 @@ var fieldIDToName_RelationFriendListResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "userList",
-}
-
-func (p *RelationFriendListResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *RelationFriendListResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -1631,7 +1589,7 @@ func (p *RelationFriendListResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -1711,16 +1669,14 @@ WriteFieldEndError:
 }
 
 func (p *RelationFriendListResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1947,7 +1903,7 @@ func (p *MessageChatRequest) String() string {
 
 type MessageChatResponse struct {
 	StatusCode  int32             `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg   *string           `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg   string            `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	MessageList []*shared.Message `thrift:"messageList,3" form:"messageList" json:"messageList" query:"messageList"`
 }
 
@@ -1959,13 +1915,8 @@ func (p *MessageChatResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var MessageChatResponse_StatusMsg_DEFAULT string
-
 func (p *MessageChatResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return MessageChatResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *MessageChatResponse) GetMessageList() (v []*shared.Message) {
@@ -1976,10 +1927,6 @@ var fieldIDToName_MessageChatResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "messageList",
-}
-
-func (p *MessageChatResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *MessageChatResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -2074,7 +2021,7 @@ func (p *MessageChatResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -2154,16 +2101,14 @@ WriteFieldEndError:
 }
 
 func (p *MessageChatResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -2481,8 +2426,8 @@ func (p *MessageActionRequest) String() string {
 }
 
 type MessageActionResponse struct {
-	StatusCode int32   `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusCode int32  `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
+	StatusMsg  string `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 }
 
 func NewMessageActionResponse() *MessageActionResponse {
@@ -2493,22 +2438,13 @@ func (p *MessageActionResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var MessageActionResponse_StatusMsg_DEFAULT string
-
 func (p *MessageActionResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return MessageActionResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 var fieldIDToName_MessageActionResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
-}
-
-func (p *MessageActionResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *MessageActionResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -2593,7 +2529,7 @@ func (p *MessageActionResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -2649,16 +2585,14 @@ WriteFieldEndError:
 }
 
 func (p *MessageActionResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:

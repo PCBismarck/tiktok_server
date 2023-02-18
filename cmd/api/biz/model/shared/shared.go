@@ -10,8 +10,8 @@ import (
 type User struct {
 	ID            int64  `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
 	Name          string `thrift:"name,2,required" form:"name,required" json:"name,required" query:"name,required"`
-	FollowCount   *int64 `thrift:"follow_count,3,optional" form:"follow_count" json:"follow_count,omitempty" query:"follow_count"`
-	FollowerCount *int64 `thrift:"follower_count,4,optional" form:"follower_count" json:"follower_count,omitempty" query:"follower_count"`
+	FollowCount   int64  `thrift:"follow_count,3,required" form:"follow_count,required" json:"follow_count,required" query:"follow_count,required"`
+	FollowerCount int64  `thrift:"follower_count,4,required" form:"follower_count,required" json:"follower_count,required" query:"follower_count,required"`
 	IsFollow      bool   `thrift:"is_follow,5,required" form:"is_follow,required" json:"is_follow,required" query:"is_follow,required"`
 }
 
@@ -27,22 +27,12 @@ func (p *User) GetName() (v string) {
 	return p.Name
 }
 
-var User_FollowCount_DEFAULT int64
-
 func (p *User) GetFollowCount() (v int64) {
-	if !p.IsSetFollowCount() {
-		return User_FollowCount_DEFAULT
-	}
-	return *p.FollowCount
+	return p.FollowCount
 }
 
-var User_FollowerCount_DEFAULT int64
-
 func (p *User) GetFollowerCount() (v int64) {
-	if !p.IsSetFollowerCount() {
-		return User_FollowerCount_DEFAULT
-	}
-	return *p.FollowerCount
+	return p.FollowerCount
 }
 
 func (p *User) GetIsFollow() (v bool) {
@@ -57,20 +47,14 @@ var fieldIDToName_User = map[int16]string{
 	5: "is_follow",
 }
 
-func (p *User) IsSetFollowCount() bool {
-	return p.FollowCount != nil
-}
-
-func (p *User) IsSetFollowerCount() bool {
-	return p.FollowerCount != nil
-}
-
 func (p *User) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetID bool = false
 	var issetName bool = false
+	var issetFollowCount bool = false
+	var issetFollowerCount bool = false
 	var issetIsFollow bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
@@ -114,6 +98,7 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetFollowCount = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -124,6 +109,7 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetFollowerCount = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -161,6 +147,16 @@ func (p *User) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetName {
 		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetFollowCount {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetFollowerCount {
+		fieldId = 4
 		goto RequiredFieldNotSetError
 	}
 
@@ -208,7 +204,7 @@ func (p *User) ReadField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.FollowCount = &v
+		p.FollowCount = v
 	}
 	return nil
 }
@@ -217,7 +213,7 @@ func (p *User) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.FollowerCount = &v
+		p.FollowerCount = v
 	}
 	return nil
 }
@@ -311,16 +307,14 @@ WriteFieldEndError:
 }
 
 func (p *User) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetFollowCount() {
-		if err = oprot.WriteFieldBegin("follow_count", thrift.I64, 3); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.FollowCount); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("follow_count", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.FollowCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -330,16 +324,14 @@ WriteFieldEndError:
 }
 
 func (p *User) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetFollowerCount() {
-		if err = oprot.WriteFieldBegin("follower_count", thrift.I64, 4); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.FollowerCount); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("follower_count", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.FollowerCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -373,13 +365,13 @@ func (p *User) String() string {
 }
 
 type FriendUser struct {
-	ID            int64   `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
-	Name          string  `thrift:"name,2,required" form:"name,required" json:"name,required" query:"name,required"`
-	FollowCount   *int64  `thrift:"follow_count,3,optional" form:"follow_count" json:"follow_count,omitempty" query:"follow_count"`
-	FollowerCount *int64  `thrift:"follower_count,4,optional" form:"follower_count" json:"follower_count,omitempty" query:"follower_count"`
-	IsFollow      bool    `thrift:"is_follow,5,required" form:"is_follow,required" json:"is_follow,required" query:"is_follow,required"`
-	Message       *string `thrift:"Message,6,optional" form:"Message" json:"Message,omitempty" query:"Message"`
-	MsgType       int64   `thrift:"msgType,7" form:"msgType" json:"msgType" query:"msgType"`
+	ID            int64  `thrift:"id,1,required" form:"id,required" json:"id,required" query:"id,required"`
+	Name          string `thrift:"name,2,required" form:"name,required" json:"name,required" query:"name,required"`
+	FollowCount   int64  `thrift:"follow_count,3,required" form:"follow_count,required" json:"follow_count,required" query:"follow_count,required"`
+	FollowerCount int64  `thrift:"follower_count,4,required" form:"follower_count,required" json:"follower_count,required" query:"follower_count,required"`
+	IsFollow      bool   `thrift:"is_follow,5,required" form:"is_follow,required" json:"is_follow,required" query:"is_follow,required"`
+	Message       string `thrift:"Message,6,required" form:"Message,required" json:"Message,required" query:"Message,required"`
+	MsgType       int64  `thrift:"msgType,7" form:"msgType" json:"msgType" query:"msgType"`
 }
 
 func NewFriendUser() *FriendUser {
@@ -394,35 +386,20 @@ func (p *FriendUser) GetName() (v string) {
 	return p.Name
 }
 
-var FriendUser_FollowCount_DEFAULT int64
-
 func (p *FriendUser) GetFollowCount() (v int64) {
-	if !p.IsSetFollowCount() {
-		return FriendUser_FollowCount_DEFAULT
-	}
-	return *p.FollowCount
+	return p.FollowCount
 }
 
-var FriendUser_FollowerCount_DEFAULT int64
-
 func (p *FriendUser) GetFollowerCount() (v int64) {
-	if !p.IsSetFollowerCount() {
-		return FriendUser_FollowerCount_DEFAULT
-	}
-	return *p.FollowerCount
+	return p.FollowerCount
 }
 
 func (p *FriendUser) GetIsFollow() (v bool) {
 	return p.IsFollow
 }
 
-var FriendUser_Message_DEFAULT string
-
 func (p *FriendUser) GetMessage() (v string) {
-	if !p.IsSetMessage() {
-		return FriendUser_Message_DEFAULT
-	}
-	return *p.Message
+	return p.Message
 }
 
 func (p *FriendUser) GetMsgType() (v int64) {
@@ -439,25 +416,16 @@ var fieldIDToName_FriendUser = map[int16]string{
 	7: "msgType",
 }
 
-func (p *FriendUser) IsSetFollowCount() bool {
-	return p.FollowCount != nil
-}
-
-func (p *FriendUser) IsSetFollowerCount() bool {
-	return p.FollowerCount != nil
-}
-
-func (p *FriendUser) IsSetMessage() bool {
-	return p.Message != nil
-}
-
 func (p *FriendUser) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
 	var issetID bool = false
 	var issetName bool = false
+	var issetFollowCount bool = false
+	var issetFollowerCount bool = false
 	var issetIsFollow bool = false
+	var issetMessage bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -500,6 +468,7 @@ func (p *FriendUser) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetFollowCount = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -510,6 +479,7 @@ func (p *FriendUser) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField4(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetFollowerCount = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -531,6 +501,7 @@ func (p *FriendUser) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField6(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetMessage = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -570,8 +541,23 @@ func (p *FriendUser) Read(iprot thrift.TProtocol) (err error) {
 		goto RequiredFieldNotSetError
 	}
 
+	if !issetFollowCount {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetFollowerCount {
+		fieldId = 4
+		goto RequiredFieldNotSetError
+	}
+
 	if !issetIsFollow {
 		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetMessage {
+		fieldId = 6
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -614,7 +600,7 @@ func (p *FriendUser) ReadField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.FollowCount = &v
+		p.FollowCount = v
 	}
 	return nil
 }
@@ -623,7 +609,7 @@ func (p *FriendUser) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.FollowerCount = &v
+		p.FollowerCount = v
 	}
 	return nil
 }
@@ -641,7 +627,7 @@ func (p *FriendUser) ReadField6(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Message = &v
+		p.Message = v
 	}
 	return nil
 }
@@ -743,16 +729,14 @@ WriteFieldEndError:
 }
 
 func (p *FriendUser) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetFollowCount() {
-		if err = oprot.WriteFieldBegin("follow_count", thrift.I64, 3); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.FollowCount); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("follow_count", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.FollowCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -762,16 +746,14 @@ WriteFieldEndError:
 }
 
 func (p *FriendUser) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetFollowerCount() {
-		if err = oprot.WriteFieldBegin("follower_count", thrift.I64, 4); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.FollowerCount); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("follower_count", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.FollowerCount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -798,16 +780,14 @@ WriteFieldEndError:
 }
 
 func (p *FriendUser) writeField6(oprot thrift.TProtocol) (err error) {
-	if p.IsSetMessage() {
-		if err = oprot.WriteFieldBegin("Message", thrift.STRING, 6); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.Message); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("Message", thrift.STRING, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Message); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1648,11 +1628,11 @@ func (p *Comment) String() string {
 }
 
 type Message struct {
-	ID         int64   `thrift:"id,1" form:"id" json:"id" query:"id"`
-	ToUserId   int64   `thrift:"toUserId,2" form:"toUserId" json:"toUserId" query:"toUserId"`
-	FromUserId int64   `thrift:"fromUserId,3" form:"fromUserId" json:"fromUserId" query:"fromUserId"`
-	Content    string  `thrift:"content,4" form:"content" json:"content" query:"content"`
-	CreateTime *string `thrift:"createTime,5,optional" form:"createTime" json:"createTime,omitempty" query:"createTime"`
+	ID         int64  `thrift:"id,1" form:"id" json:"id" query:"id"`
+	ToUserId   int64  `thrift:"toUserId,2" form:"toUserId" json:"toUserId" query:"toUserId"`
+	FromUserId int64  `thrift:"fromUserId,3" form:"fromUserId" json:"fromUserId" query:"fromUserId"`
+	Content    string `thrift:"content,4" form:"content" json:"content" query:"content"`
+	CreateTime string `thrift:"createTime,5,required" form:"createTime,required" json:"createTime,required" query:"createTime,required"`
 }
 
 func NewMessage() *Message {
@@ -1675,13 +1655,8 @@ func (p *Message) GetContent() (v string) {
 	return p.Content
 }
 
-var Message_CreateTime_DEFAULT string
-
 func (p *Message) GetCreateTime() (v string) {
-	if !p.IsSetCreateTime() {
-		return Message_CreateTime_DEFAULT
-	}
-	return *p.CreateTime
+	return p.CreateTime
 }
 
 var fieldIDToName_Message = map[int16]string{
@@ -1692,14 +1667,11 @@ var fieldIDToName_Message = map[int16]string{
 	5: "createTime",
 }
 
-func (p *Message) IsSetCreateTime() bool {
-	return p.CreateTime != nil
-}
-
 func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
+	var issetCreateTime bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -1760,6 +1732,7 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
+				issetCreateTime = true
 			} else {
 				if err = iprot.Skip(fieldTypeId); err != nil {
 					goto SkipFieldError
@@ -1779,6 +1752,10 @@ func (p *Message) Read(iprot thrift.TProtocol) (err error) {
 		goto ReadStructEndError
 	}
 
+	if !issetCreateTime {
+		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
 	return nil
 ReadStructBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
@@ -1793,6 +1770,8 @@ ReadFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
 ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_Message[fieldId]))
 }
 
 func (p *Message) ReadField1(iprot thrift.TProtocol) error {
@@ -1835,7 +1814,7 @@ func (p *Message) ReadField5(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.CreateTime = &v
+		p.CreateTime = v
 	}
 	return nil
 }
@@ -1954,16 +1933,14 @@ WriteFieldEndError:
 }
 
 func (p *Message) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetCreateTime() {
-		if err = oprot.WriteFieldBegin("createTime", thrift.STRING, 5); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.CreateTime); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("createTime", thrift.STRING, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.CreateTime); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
