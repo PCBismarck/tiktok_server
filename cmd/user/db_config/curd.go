@@ -43,3 +43,25 @@ func GetAccountInfoByUID(uid int64) (a *Account, err error) {
 	}
 	return &user, nil
 }
+
+func UpdateFollowCount(uid int64, count int64) bool {
+	res := DB.Model(&Account{}).Where("id = ?", uid).Update("follow_count", count)
+	return res.RowsAffected > 0
+}
+
+func UpdateFollowerCount(uid int64, count int64) bool {
+	res := DB.Model(&Account{}).Where("id = ?", uid).Update("follower_count", count)
+	return res.RowsAffected > 0
+}
+
+func FollowCountAdd(uid int64, toAdd int64) bool {
+	res := DB.Model(&Account{}).Where("id = ?", uid).Update(
+		"follow_count", gorm.Expr("follow_count + ?", toAdd))
+	return res.RowsAffected > 0
+}
+
+func FollowerCountAdd(uid int64, toAdd int64) bool {
+	res := DB.Model(&Account{}).Where("id = ?", uid).Update(
+		"follower_count", gorm.Expr("follower_count + ?", toAdd))
+	return res.RowsAffected > 0
+}

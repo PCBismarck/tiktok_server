@@ -19,10 +19,14 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "UserService"
 	handlerType := (*user.UserService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreateUser":      kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
-		"VerifyUser":      kitex.NewMethodInfo(verifyUserHandler, newUserServiceVerifyUserArgs, newUserServiceVerifyUserResult, false),
-		"UserInfo":        kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
-		"GetIDByUsername": kitex.NewMethodInfo(getIDByUsernameHandler, newUserServiceGetIDByUsernameArgs, newUserServiceGetIDByUsernameResult, false),
+		"CreateUser":       kitex.NewMethodInfo(createUserHandler, newUserServiceCreateUserArgs, newUserServiceCreateUserResult, false),
+		"VerifyUser":       kitex.NewMethodInfo(verifyUserHandler, newUserServiceVerifyUserArgs, newUserServiceVerifyUserResult, false),
+		"UserInfo":         kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
+		"GetIDByUsername":  kitex.NewMethodInfo(getIDByUsernameHandler, newUserServiceGetIDByUsernameArgs, newUserServiceGetIDByUsernameResult, false),
+		"SetFollowCount":   kitex.NewMethodInfo(setFollowCountHandler, newUserServiceSetFollowCountArgs, newUserServiceSetFollowCountResult, false),
+		"SetFollowerCount": kitex.NewMethodInfo(setFollowerCountHandler, newUserServiceSetFollowerCountArgs, newUserServiceSetFollowerCountResult, false),
+		"FollowCountAdd":   kitex.NewMethodInfo(followCountAddHandler, newUserServiceFollowCountAddArgs, newUserServiceFollowCountAddResult, false),
+		"FollowerCountAdd": kitex.NewMethodInfo(followerCountAddHandler, newUserServiceFollowerCountAddArgs, newUserServiceFollowerCountAddResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -110,6 +114,78 @@ func newUserServiceGetIDByUsernameResult() interface{} {
 	return user.NewUserServiceGetIDByUsernameResult()
 }
 
+func setFollowCountHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceSetFollowCountArgs)
+	realResult := result.(*user.UserServiceSetFollowCountResult)
+	success, err := handler.(user.UserService).SetFollowCount(ctx, realArg.Uid, realArg.ToSet)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newUserServiceSetFollowCountArgs() interface{} {
+	return user.NewUserServiceSetFollowCountArgs()
+}
+
+func newUserServiceSetFollowCountResult() interface{} {
+	return user.NewUserServiceSetFollowCountResult()
+}
+
+func setFollowerCountHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceSetFollowerCountArgs)
+	realResult := result.(*user.UserServiceSetFollowerCountResult)
+	success, err := handler.(user.UserService).SetFollowerCount(ctx, realArg.Uid, realArg.ToSet)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newUserServiceSetFollowerCountArgs() interface{} {
+	return user.NewUserServiceSetFollowerCountArgs()
+}
+
+func newUserServiceSetFollowerCountResult() interface{} {
+	return user.NewUserServiceSetFollowerCountResult()
+}
+
+func followCountAddHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceFollowCountAddArgs)
+	realResult := result.(*user.UserServiceFollowCountAddResult)
+	success, err := handler.(user.UserService).FollowCountAdd(ctx, realArg.Uid, realArg.ToAdd)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newUserServiceFollowCountAddArgs() interface{} {
+	return user.NewUserServiceFollowCountAddArgs()
+}
+
+func newUserServiceFollowCountAddResult() interface{} {
+	return user.NewUserServiceFollowCountAddResult()
+}
+
+func followerCountAddHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceFollowerCountAddArgs)
+	realResult := result.(*user.UserServiceFollowerCountAddResult)
+	success, err := handler.(user.UserService).FollowerCountAdd(ctx, realArg.Uid, realArg.ToAdd)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newUserServiceFollowerCountAddArgs() interface{} {
+	return user.NewUserServiceFollowerCountAddArgs()
+}
+
+func newUserServiceFollowerCountAddResult() interface{} {
+	return user.NewUserServiceFollowerCountAddResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -155,6 +231,50 @@ func (p *kClient) GetIDByUsername(ctx context.Context, username string) (r int64
 	_args.Username = username
 	var _result user.UserServiceGetIDByUsernameResult
 	if err = p.c.Call(ctx, "GetIDByUsername", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) SetFollowCount(ctx context.Context, uid int64, toSet int64) (r bool, err error) {
+	var _args user.UserServiceSetFollowCountArgs
+	_args.Uid = uid
+	_args.ToSet = toSet
+	var _result user.UserServiceSetFollowCountResult
+	if err = p.c.Call(ctx, "SetFollowCount", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) SetFollowerCount(ctx context.Context, uid int64, toSet int64) (r bool, err error) {
+	var _args user.UserServiceSetFollowerCountArgs
+	_args.Uid = uid
+	_args.ToSet = toSet
+	var _result user.UserServiceSetFollowerCountResult
+	if err = p.c.Call(ctx, "SetFollowerCount", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FollowCountAdd(ctx context.Context, uid int64, toAdd int64) (r bool, err error) {
+	var _args user.UserServiceFollowCountAddArgs
+	_args.Uid = uid
+	_args.ToAdd = toAdd
+	var _result user.UserServiceFollowCountAddResult
+	if err = p.c.Call(ctx, "FollowCountAdd", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) FollowerCountAdd(ctx context.Context, uid int64, toAdd int64) (r bool, err error) {
+	var _args user.UserServiceFollowerCountAddArgs
+	_args.Uid = uid
+	_args.ToAdd = toAdd
+	var _result user.UserServiceFollowerCountAddResult
+	if err = p.c.Call(ctx, "FollowerCountAdd", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

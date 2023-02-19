@@ -15,6 +15,10 @@ type Client interface {
 	VerifyUser(ctx context.Context, req *user.VerifyUserRequest, callOptions ...callopt.Option) (r *user.VerifyUserResponse, err error)
 	UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error)
 	GetIDByUsername(ctx context.Context, username string, callOptions ...callopt.Option) (r int64, err error)
+	SetFollowCount(ctx context.Context, uid int64, toSet int64, callOptions ...callopt.Option) (r bool, err error)
+	SetFollowerCount(ctx context.Context, uid int64, toSet int64, callOptions ...callopt.Option) (r bool, err error)
+	FollowCountAdd(ctx context.Context, uid int64, toAdd int64, callOptions ...callopt.Option) (r bool, err error)
+	FollowerCountAdd(ctx context.Context, uid int64, toAdd int64, callOptions ...callopt.Option) (r bool, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -64,4 +68,24 @@ func (p *kUserServiceClient) UserInfo(ctx context.Context, req *user.UserInfoReq
 func (p *kUserServiceClient) GetIDByUsername(ctx context.Context, username string, callOptions ...callopt.Option) (r int64, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetIDByUsername(ctx, username)
+}
+
+func (p *kUserServiceClient) SetFollowCount(ctx context.Context, uid int64, toSet int64, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.SetFollowCount(ctx, uid, toSet)
+}
+
+func (p *kUserServiceClient) SetFollowerCount(ctx context.Context, uid int64, toSet int64, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.SetFollowerCount(ctx, uid, toSet)
+}
+
+func (p *kUserServiceClient) FollowCountAdd(ctx context.Context, uid int64, toAdd int64, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FollowCountAdd(ctx, uid, toAdd)
+}
+
+func (p *kUserServiceClient) FollowerCountAdd(ctx context.Context, uid int64, toAdd int64, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.FollowerCountAdd(ctx, uid, toAdd)
 }

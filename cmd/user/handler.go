@@ -105,3 +105,43 @@ func GetID(username string) (uid int64) {
 	}
 	return int64(a.ID)
 }
+
+// SetFollowCount implements the UserServiceImpl interface.
+func (s *UserServiceImpl) SetFollowCount(ctx context.Context, uid int64, toSet int64) (resp bool, err error) {
+	// TODO: Your code here...
+	ok := dbconfig.UpdateFollowCount(uid, toSet)
+	if !ok {
+		err = fmt.Errorf("set followcount fail")
+	}
+	return ok, err
+}
+
+// SetFollowerCount implements the UserServiceImpl interface.
+func (s *UserServiceImpl) SetFollowerCount(ctx context.Context, uid int64, toSet int64) (resp bool, err error) {
+	// TODO: Your code here...
+	ok := dbconfig.UpdateFollowerCount(uid, toSet)
+	if !ok {
+		err = fmt.Errorf("set followercount fail")
+	}
+	return ok, err
+}
+
+// FollowCountAdd implements the UserServiceImpl interface.
+func (s *UserServiceImpl) FollowCountAdd(ctx context.Context, uid int64, toAdd int64) (resp bool, err error) {
+	// TODO: Your code here...
+	ok := dbconfig.FollowCountAdd(uid, toAdd)
+	if !ok {
+		err = fmt.Errorf("add followcount fail")
+	}
+	return ok, err
+}
+
+// FollowerCountAdd implements the UserServiceImpl interface.
+func (s *UserServiceImpl) FollowerCountAdd(ctx context.Context, uid int64, toAdd int64) (resp bool, err error) {
+	// TODO: Your code here...
+	ok := dbconfig.FollowerCountAdd(uid, toAdd)
+	if !ok {
+		err = fmt.Errorf("add followercount fail")
+	}
+	return ok, err
+}
