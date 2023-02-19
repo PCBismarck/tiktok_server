@@ -25,6 +25,7 @@ func initUser() {
 
 // Register
 // token will not be set here
+// it will create user and run login auto
 func Register(ctx context.Context, req basic.UserRegisterRequest) (resp *basic.UserRegisterResponse, err error) {
 	resp = new(basic.UserRegisterResponse)
 	cresp, err := userClient.CreateUser(ctx, (*user.CreateUserRequest)(&req))
@@ -79,7 +80,22 @@ func UserInfo(ctx context.Context, c basic.UserRequest) (resp *basic.UserRespons
 	return
 }
 
-func GetIDByUsername(ctx context.Context, username string) (resp int64, err error) {
-	uid, err := userClient.GetIDByUsername(ctx, username)
-	return uid, err
+func GetIDByUsername(ctx context.Context, username string) (uid int64, err error) {
+	return userClient.GetIDByUsername(ctx, username)
+}
+
+func UpdateFollowCountWith(ctx context.Context, uid int64, num int64) (bool, error) {
+	return userClient.SetFollowCount(ctx, uid, num)
+}
+
+func UpdateFollowerCountWith(ctx context.Context, uid int64, num int64) (bool, error) {
+	return userClient.SetFollowerCount(ctx, uid, num)
+}
+
+func FollowCountAdd(ctx context.Context, uid int64, toAdd int64) (bool, error) {
+	return userClient.FollowCountAdd(ctx, uid, toAdd)
+}
+
+func FollowerCountAdd(ctx context.Context, uid int64, toAdd int64) (bool, error) {
+	return userClient.FollowCountAdd(ctx, uid, toAdd)
 }
