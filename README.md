@@ -14,3 +14,11 @@
 2. 在该文件中需要初始化对应服务的 **service.client**
 3. 通过对应的**client**访问微服务
 4. 在 **cmd/api/biz/handler/** 中使用rpc文件中的函数
+
+## 如何将token解析并获取uid：
+在/api 下的加入以下语句即可解析出uid
+```golang
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	uid := user.(*shared.User).ID
+```
