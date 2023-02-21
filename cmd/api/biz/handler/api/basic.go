@@ -6,6 +6,7 @@ import (
 	"context"
 
 	basic "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app"
@@ -24,7 +25,14 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(basic.FeedResponse)
-	resp.StatusCode = consts.StatusOK
+
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	// claims := jwt.ExtractClaims(ctx, c)
+	// fmt.Printf("claims: %#v\n", claims)
+	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	uid := user.(*shared.User).ID
+
+	resp.StatusCode = int32(uid)
 	msg := req.Token
 	resp.StatusMsg = msg
 

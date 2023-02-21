@@ -54,14 +54,15 @@ func InitJWT() {
 				Username: req.Username,
 				Password: req.Password,
 			})
+			c.Set("userId", resp.UserId)
 			return resp.UserId, err
 		},
 		LoginResponse: func(ctx context.Context, c *app.RequestContext, code int, token string, expire time.Time) {
-			uid, _ := rpc.GetIDByUsername(ctx, c.Query("username"))
+			uid, _ := c.Get("userId")
 			c.JSON(http.StatusOK, basic.UserLoginResponse{
-				StatusCode: 0,
+				StatusCode: consts.SuccessCode,
 				StatusMsg:  "Login success",
-				UserId:     uid,
+				UserId:     uid.(int64),
 				Token:      token,
 			})
 		},
