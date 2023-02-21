@@ -22,3 +22,29 @@
 	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
 	uid := user.(*shared.User).ID
 ```
+例如修改feed的处理函数：
+```golang
+// Feed .
+// @router /douyin/feed/ [GET]
+func Feed(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req basic.FeedRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(basic.FeedResponse)
+	// 提取uid
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	uid := user.(*shared.User).ID
+
+	resp.StatusCode = int32(uid)
+	msg := req.Token
+	resp.StatusMsg = msg
+
+	c.JSON(consts.StatusOK, resp)
+}
+```
