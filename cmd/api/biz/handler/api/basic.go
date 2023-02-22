@@ -27,8 +27,6 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 	resp := new(basic.FeedResponse)
 
 	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
-	// claims := jwt.ExtractClaims(ctx, c)
-	// fmt.Printf("claims: %#v\n", claims)
 	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
 	uid := user.(*shared.User).ID
 

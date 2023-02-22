@@ -6,6 +6,10 @@ import (
 	"context"
 
 	interaction "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/interaction"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
+	"github.com/PCBismarck/tiktok_server/cmd/favorite/kitex_gen/favorite"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -20,9 +24,17 @@ func FavrotieAction(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(interaction.FavoriteActionResponse)
-
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	uid := user.(*shared.User).ID
+	resp, _ := rpc.FavoriteAction(ctx, &favorite.FavoriteActionRequest{
+		UserId:     uid,
+		VideoId:    req.VideoId,
+		ActionType: req.ActionType,
+	})
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -36,8 +48,14 @@ func FavoriteList(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(interaction.FavoriteListResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	resp, _ := rpc.FavoriteList(ctx, &favorite.FavoriteListRequest{
+		UserId: req.UserId,
+	})
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -52,6 +70,14 @@ func CommentAction(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+
+	// 鉴权并获取uid
+	// mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	// user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	// if !ok {
+	// 	return
+	// }
+	// uid := user.(*shared.User).ID
 
 	resp := new(interaction.CommentActionResponse)
 

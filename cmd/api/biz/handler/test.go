@@ -5,17 +5,23 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
 
 func FollowCountAddTest(ctx context.Context, c *app.RequestContext) {
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	res, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	fmt.Printf("res: %#v\n", res)
+	uid := res.(*shared.User).ID
 	// uid := mw.JwtMiddleware.IdentityHandler(ctx, c).(shared.User).ID
 	to_uid, _ := strconv.ParseInt(c.Query("to_user_id"), 10, 64)
 	action_type := c.Query("action_type")
 	fmt.Println("follow test")
-	// fmt.Printf("uid: %v\n", uid)
+	fmt.Printf("uid: %v\n", uid)
 	fmt.Printf("to_uid: %v\n", to_uid)
 	fmt.Printf("action_type: %v\n", action_type)
 	var v int64
@@ -26,10 +32,10 @@ func FollowCountAddTest(ctx context.Context, c *app.RequestContext) {
 	} else {
 		return
 	}
-	// rpc.FollowCountAdd(ctx, uid, v)
+	rpc.FollowCountAdd(ctx, uid, v)
 	ok, _ := rpc.FollowerCountAdd(ctx, to_uid, v)
 	c.JSON(consts.StatusOK, map[string]interface{}{
 		"status_code": !ok,
-		"status_msg":  fmt.Sprintf("%d follow %d", -1, to_uid),
+		"status_msg":  fmt.Sprintf("%d follow %d", uid, to_uid),
 	})
 }
