@@ -19,9 +19,13 @@
 ## 如何将token解析并获取uid：
 在/api 下的加入以下语句即可解析出uid
 ```golang
-	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
-	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
-	uid := user.(*shared.User).ID
+鉴权并获取uid
+mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+if !ok {
+	return
+}
+uid := user.(*shared.User).ID
 ```
 例如修改feed的处理函数：
 ```golang
@@ -37,9 +41,13 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(basic.FeedResponse)
-	// 提取uid
+	
+	// 鉴权并获取uid
 	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
-	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
 	uid := user.(*shared.User).ID
 
 	resp.StatusCode = int32(uid)
