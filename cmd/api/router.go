@@ -12,4 +12,6 @@ func customizedRegister(r *server.Hertz) {
 	r.GET("/ping", handler.Ping)
 
 	// your code ...
+
+	r.POST("/douyin/relation/action/test/", handler.FollowCountAddTest)
 }

@@ -10,43 +10,25 @@ import (
 
 // feed
 type FeedRequest struct {
-	LatestTime *int64  `thrift:"latestTime,1,optional" json:"latestTime,omitempty" query:"latest_time"`
-	Token      *string `thrift:"token,2,optional" json:"token,omitempty" query:"token"`
+	LatestTime int64  `thrift:"latestTime,1" json:"latestTime" query:"latest_time"`
+	Token      string `thrift:"token,2" json:"token" query:"token"`
 }
 
 func NewFeedRequest() *FeedRequest {
 	return &FeedRequest{}
 }
 
-var FeedRequest_LatestTime_DEFAULT int64
-
 func (p *FeedRequest) GetLatestTime() (v int64) {
-	if !p.IsSetLatestTime() {
-		return FeedRequest_LatestTime_DEFAULT
-	}
-	return *p.LatestTime
+	return p.LatestTime
 }
 
-var FeedRequest_Token_DEFAULT string
-
 func (p *FeedRequest) GetToken() (v string) {
-	if !p.IsSetToken() {
-		return FeedRequest_Token_DEFAULT
-	}
-	return *p.Token
+	return p.Token
 }
 
 var fieldIDToName_FeedRequest = map[int16]string{
 	1: "latestTime",
 	2: "token",
-}
-
-func (p *FeedRequest) IsSetLatestTime() bool {
-	return p.LatestTime != nil
-}
-
-func (p *FeedRequest) IsSetToken() bool {
-	return p.Token != nil
 }
 
 func (p *FeedRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -122,7 +104,7 @@ func (p *FeedRequest) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.LatestTime = &v
+		p.LatestTime = v
 	}
 	return nil
 }
@@ -131,7 +113,7 @@ func (p *FeedRequest) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Token = &v
+		p.Token = v
 	}
 	return nil
 }
@@ -170,16 +152,14 @@ WriteStructEndError:
 }
 
 func (p *FeedRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if p.IsSetLatestTime() {
-		if err = oprot.WriteFieldBegin("latestTime", thrift.I64, 1); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.LatestTime); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("latestTime", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.LatestTime); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -189,16 +169,14 @@ WriteFieldEndError:
 }
 
 func (p *FeedRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetToken() {
-		if err = oprot.WriteFieldBegin("token", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.Token); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("token", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Token); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -216,9 +194,9 @@ func (p *FeedRequest) String() string {
 
 type FeedResponse struct {
 	StatusCode int32           `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string         `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string          `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	VideoList  []*shared.Video `thrift:"videoList,3" form:"videoList" json:"videoList" query:"videoList"`
-	NextTime   *int64          `thrift:"nextTime,4,optional" form:"nextTime" json:"nextTime,omitempty" query:"nextTime"`
+	NextTime   int64           `thrift:"nextTime,4" form:"nextTime" json:"nextTime" query:"nextTime"`
 }
 
 func NewFeedResponse() *FeedResponse {
@@ -229,26 +207,16 @@ func (p *FeedResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var FeedResponse_StatusMsg_DEFAULT string
-
 func (p *FeedResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return FeedResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *FeedResponse) GetVideoList() (v []*shared.Video) {
 	return p.VideoList
 }
 
-var FeedResponse_NextTime_DEFAULT int64
-
 func (p *FeedResponse) GetNextTime() (v int64) {
-	if !p.IsSetNextTime() {
-		return FeedResponse_NextTime_DEFAULT
-	}
-	return *p.NextTime
+	return p.NextTime
 }
 
 var fieldIDToName_FeedResponse = map[int16]string{
@@ -256,14 +224,6 @@ var fieldIDToName_FeedResponse = map[int16]string{
 	2: "statusMsg",
 	3: "videoList",
 	4: "nextTime",
-}
-
-func (p *FeedResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
-}
-
-func (p *FeedResponse) IsSetNextTime() bool {
-	return p.NextTime != nil
 }
 
 func (p *FeedResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -368,7 +328,7 @@ func (p *FeedResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -397,7 +357,7 @@ func (p *FeedResponse) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.NextTime = &v
+		p.NextTime = v
 	}
 	return nil
 }
@@ -461,16 +421,14 @@ WriteFieldEndError:
 }
 
 func (p *FeedResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -505,16 +463,14 @@ WriteFieldEndError:
 }
 
 func (p *FeedResponse) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetNextTime() {
-		if err = oprot.WriteFieldBegin("nextTime", thrift.I64, 4); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.NextTime); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("nextTime", thrift.I64, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.NextTime); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -715,10 +671,10 @@ func (p *UserRegisterRequest) String() string {
 }
 
 type UserRegisterResponse struct {
-	StatusCode int32   `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
-	UserId     int64   `thrift:"userId,3" form:"userId" json:"userId" query:"userId"`
-	Token      string  `thrift:"token,4" form:"token" json:"token" query:"token"`
+	StatusCode int32  `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
+	StatusMsg  string `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
+	UserId     int64  `thrift:"userId,3" form:"userId" json:"userId" query:"userId"`
+	Token      string `thrift:"token,4" form:"token" json:"token" query:"token"`
 }
 
 func NewUserRegisterResponse() *UserRegisterResponse {
@@ -729,13 +685,8 @@ func (p *UserRegisterResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var UserRegisterResponse_StatusMsg_DEFAULT string
-
 func (p *UserRegisterResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return UserRegisterResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *UserRegisterResponse) GetUserId() (v int64) {
@@ -751,10 +702,6 @@ var fieldIDToName_UserRegisterResponse = map[int16]string{
 	2: "statusMsg",
 	3: "userId",
 	4: "token",
-}
-
-func (p *UserRegisterResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *UserRegisterResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -859,7 +806,7 @@ func (p *UserRegisterResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -941,16 +888,14 @@ WriteFieldEndError:
 }
 
 func (p *UserRegisterResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1185,10 +1130,10 @@ func (p *UserLoginRequest) String() string {
 }
 
 type UserLoginResponse struct {
-	StatusCode int32   `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
-	UserId     int64   `thrift:"userId,3" form:"userId" json:"userId" query:"userId"`
-	Token      string  `thrift:"token,4" form:"token" json:"token" query:"token"`
+	StatusCode int32  `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
+	StatusMsg  string `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
+	UserId     int64  `thrift:"userId,3" form:"userId" json:"userId" query:"userId"`
+	Token      string `thrift:"token,4" form:"token" json:"token" query:"token"`
 }
 
 func NewUserLoginResponse() *UserLoginResponse {
@@ -1199,13 +1144,8 @@ func (p *UserLoginResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var UserLoginResponse_StatusMsg_DEFAULT string
-
 func (p *UserLoginResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return UserLoginResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *UserLoginResponse) GetUserId() (v int64) {
@@ -1221,10 +1161,6 @@ var fieldIDToName_UserLoginResponse = map[int16]string{
 	2: "statusMsg",
 	3: "userId",
 	4: "token",
-}
-
-func (p *UserLoginResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *UserLoginResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -1329,7 +1265,7 @@ func (p *UserLoginResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -1411,16 +1347,14 @@ WriteFieldEndError:
 }
 
 func (p *UserLoginResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1656,7 +1590,7 @@ func (p *UserRequest) String() string {
 
 type UserResponse struct {
 	StatusCode int32        `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string      `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string       `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	User       *shared.User `thrift:"user,3" form:"user" json:"user" query:"user"`
 }
 
@@ -1668,13 +1602,8 @@ func (p *UserResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var UserResponse_StatusMsg_DEFAULT string
-
 func (p *UserResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return UserResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 var UserResponse_User_DEFAULT *shared.User
@@ -1690,10 +1619,6 @@ var fieldIDToName_UserResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "user",
-}
-
-func (p *UserResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *UserResponse) IsSetUser() bool {
@@ -1792,7 +1717,7 @@ func (p *UserResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -1860,16 +1785,14 @@ WriteFieldEndError:
 }
 
 func (p *UserResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -2133,8 +2056,8 @@ func (p *PublishActionRequest) String() string {
 }
 
 type PublishActionResponse struct {
-	StatusCode int32   `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusCode int32  `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
+	StatusMsg  string `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 }
 
 func NewPublishActionResponse() *PublishActionResponse {
@@ -2145,22 +2068,13 @@ func (p *PublishActionResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var PublishActionResponse_StatusMsg_DEFAULT string
-
 func (p *PublishActionResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return PublishActionResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 var fieldIDToName_PublishActionResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
-}
-
-func (p *PublishActionResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *PublishActionResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -2245,7 +2159,7 @@ func (p *PublishActionResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -2301,16 +2215,14 @@ WriteFieldEndError:
 }
 
 func (p *PublishActionResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -2512,7 +2424,7 @@ func (p *PublishListRequest) String() string {
 
 type PublishListResponse struct {
 	StatusCode int32           `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string         `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string          `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	VideoList  []*shared.Video `thrift:"videoList,3" form:"videoList" json:"videoList" query:"videoList"`
 }
 
@@ -2524,13 +2436,8 @@ func (p *PublishListResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var PublishListResponse_StatusMsg_DEFAULT string
-
 func (p *PublishListResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return PublishListResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *PublishListResponse) GetVideoList() (v []*shared.Video) {
@@ -2541,10 +2448,6 @@ var fieldIDToName_PublishListResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "videoList",
-}
-
-func (p *PublishListResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *PublishListResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -2639,7 +2542,7 @@ func (p *PublishListResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -2719,16 +2622,14 @@ WriteFieldEndError:
 }
 
 func (p *PublishListResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:

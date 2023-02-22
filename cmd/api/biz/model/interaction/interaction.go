@@ -239,8 +239,8 @@ func (p *FavoriteActionRequest) String() string {
 }
 
 type FavoriteActionResponse struct {
-	StatusCode int32   `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusCode int32  `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
+	StatusMsg  string `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 }
 
 func NewFavoriteActionResponse() *FavoriteActionResponse {
@@ -251,22 +251,13 @@ func (p *FavoriteActionResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var FavoriteActionResponse_StatusMsg_DEFAULT string
-
 func (p *FavoriteActionResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return FavoriteActionResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 var fieldIDToName_FavoriteActionResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
-}
-
-func (p *FavoriteActionResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *FavoriteActionResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -351,7 +342,7 @@ func (p *FavoriteActionResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -407,16 +398,14 @@ WriteFieldEndError:
 }
 
 func (p *FavoriteActionResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -618,7 +607,7 @@ func (p *FavoriteListRequest) String() string {
 
 type FavoriteListResponse struct {
 	StatusCode int32           `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string         `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg  string          `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	VideoList  []*shared.Video `thrift:"videoList,3" form:"videoList" json:"videoList" query:"videoList"`
 }
 
@@ -630,13 +619,8 @@ func (p *FavoriteListResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var FavoriteListResponse_StatusMsg_DEFAULT string
-
 func (p *FavoriteListResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return FavoriteListResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *FavoriteListResponse) GetVideoList() (v []*shared.Video) {
@@ -647,10 +631,6 @@ var fieldIDToName_FavoriteListResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "videoList",
-}
-
-func (p *FavoriteListResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *FavoriteListResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -745,7 +725,7 @@ func (p *FavoriteListResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -825,16 +805,14 @@ WriteFieldEndError:
 }
 
 func (p *FavoriteListResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -877,11 +855,11 @@ func (p *FavoriteListResponse) String() string {
 
 // comment
 type CommentActionRequest struct {
-	Token       string  `thrift:"token,1" json:"token" query:"token"`
-	VideoId     int64   `thrift:"videoId,2" json:"videoId" query:"video_id"`
-	ActionType  int32   `thrift:"actionType,3" json:"actionType" query:"action_type"`
-	CommentText *string `thrift:"commentText,4,optional" json:"commentText,omitempty" query:"comment_text"`
-	CommentId   *int64  `thrift:"commentId,5,optional" json:"commentId,omitempty" query:"comment_id"`
+	Token       string `thrift:"token,1" json:"token" query:"token"`
+	VideoId     int64  `thrift:"videoId,2" json:"videoId" query:"video_id"`
+	ActionType  int32  `thrift:"actionType,3" json:"actionType" query:"action_type"`
+	CommentText string `thrift:"commentText,4" json:"commentText" query:"comment_text"`
+	CommentId   int64  `thrift:"commentId,5" json:"commentId" query:"comment_id"`
 }
 
 func NewCommentActionRequest() *CommentActionRequest {
@@ -900,22 +878,12 @@ func (p *CommentActionRequest) GetActionType() (v int32) {
 	return p.ActionType
 }
 
-var CommentActionRequest_CommentText_DEFAULT string
-
 func (p *CommentActionRequest) GetCommentText() (v string) {
-	if !p.IsSetCommentText() {
-		return CommentActionRequest_CommentText_DEFAULT
-	}
-	return *p.CommentText
+	return p.CommentText
 }
 
-var CommentActionRequest_CommentId_DEFAULT int64
-
 func (p *CommentActionRequest) GetCommentId() (v int64) {
-	if !p.IsSetCommentId() {
-		return CommentActionRequest_CommentId_DEFAULT
-	}
-	return *p.CommentId
+	return p.CommentId
 }
 
 var fieldIDToName_CommentActionRequest = map[int16]string{
@@ -924,14 +892,6 @@ var fieldIDToName_CommentActionRequest = map[int16]string{
 	3: "actionType",
 	4: "commentText",
 	5: "commentId",
-}
-
-func (p *CommentActionRequest) IsSetCommentText() bool {
-	return p.CommentText != nil
-}
-
-func (p *CommentActionRequest) IsSetCommentId() bool {
-	return p.CommentId != nil
 }
 
 func (p *CommentActionRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -1064,7 +1024,7 @@ func (p *CommentActionRequest) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.CommentText = &v
+		p.CommentText = v
 	}
 	return nil
 }
@@ -1073,7 +1033,7 @@ func (p *CommentActionRequest) ReadField5(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.CommentId = &v
+		p.CommentId = v
 	}
 	return nil
 }
@@ -1175,16 +1135,14 @@ WriteFieldEndError:
 }
 
 func (p *CommentActionRequest) writeField4(oprot thrift.TProtocol) (err error) {
-	if p.IsSetCommentText() {
-		if err = oprot.WriteFieldBegin("commentText", thrift.STRING, 4); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.CommentText); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("commentText", thrift.STRING, 4); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.CommentText); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1194,16 +1152,14 @@ WriteFieldEndError:
 }
 
 func (p *CommentActionRequest) writeField5(oprot thrift.TProtocol) (err error) {
-	if p.IsSetCommentId() {
-		if err = oprot.WriteFieldBegin("commentId", thrift.I64, 5); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteI64(*p.CommentId); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("commentId", thrift.I64, 5); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.CommentId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1221,8 +1177,8 @@ func (p *CommentActionRequest) String() string {
 
 type CommentActionResponse struct {
 	StatusCode int32           `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg  *string         `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
-	Comment    *shared.Comment `thrift:"comment,3,optional" form:"comment" json:"comment,omitempty" query:"comment"`
+	StatusMsg  string          `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
+	Comment    *shared.Comment `thrift:"comment,3" form:"comment" json:"comment" query:"comment"`
 }
 
 func NewCommentActionResponse() *CommentActionResponse {
@@ -1233,13 +1189,8 @@ func (p *CommentActionResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var CommentActionResponse_StatusMsg_DEFAULT string
-
 func (p *CommentActionResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return CommentActionResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 var CommentActionResponse_Comment_DEFAULT *shared.Comment
@@ -1255,10 +1206,6 @@ var fieldIDToName_CommentActionResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "comment",
-}
-
-func (p *CommentActionResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *CommentActionResponse) IsSetComment() bool {
@@ -1357,7 +1304,7 @@ func (p *CommentActionResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -1425,16 +1372,14 @@ WriteFieldEndError:
 }
 
 func (p *CommentActionResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1444,16 +1389,14 @@ WriteFieldEndError:
 }
 
 func (p *CommentActionResponse) writeField3(oprot thrift.TProtocol) (err error) {
-	if p.IsSetComment() {
-		if err = oprot.WriteFieldBegin("comment", thrift.STRUCT, 3); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := p.Comment.Write(oprot); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("comment", thrift.STRUCT, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Comment.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:
@@ -1655,7 +1598,7 @@ func (p *CommentListRequest) String() string {
 
 type CommentListResponse struct {
 	StatusCode  int32             `thrift:"statusCode,1" form:"statusCode" json:"statusCode" query:"statusCode"`
-	StatusMsg   *string           `thrift:"statusMsg,2,optional" form:"statusMsg" json:"statusMsg,omitempty" query:"statusMsg"`
+	StatusMsg   string            `thrift:"statusMsg,2" form:"statusMsg" json:"statusMsg" query:"statusMsg"`
 	CommentList []*shared.Comment `thrift:"commentList,3" form:"commentList" json:"commentList" query:"commentList"`
 }
 
@@ -1667,13 +1610,8 @@ func (p *CommentListResponse) GetStatusCode() (v int32) {
 	return p.StatusCode
 }
 
-var CommentListResponse_StatusMsg_DEFAULT string
-
 func (p *CommentListResponse) GetStatusMsg() (v string) {
-	if !p.IsSetStatusMsg() {
-		return CommentListResponse_StatusMsg_DEFAULT
-	}
-	return *p.StatusMsg
+	return p.StatusMsg
 }
 
 func (p *CommentListResponse) GetCommentList() (v []*shared.Comment) {
@@ -1684,10 +1622,6 @@ var fieldIDToName_CommentListResponse = map[int16]string{
 	1: "statusCode",
 	2: "statusMsg",
 	3: "commentList",
-}
-
-func (p *CommentListResponse) IsSetStatusMsg() bool {
-	return p.StatusMsg != nil
 }
 
 func (p *CommentListResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -1782,7 +1716,7 @@ func (p *CommentListResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.StatusMsg = &v
+		p.StatusMsg = v
 	}
 	return nil
 }
@@ -1862,16 +1796,14 @@ WriteFieldEndError:
 }
 
 func (p *CommentListResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if p.IsSetStatusMsg() {
-		if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
-			goto WriteFieldBeginError
-		}
-		if err := oprot.WriteString(*p.StatusMsg); err != nil {
-			return err
-		}
-		if err = oprot.WriteFieldEnd(); err != nil {
-			goto WriteFieldEndError
-		}
+	if err = oprot.WriteFieldBegin("statusMsg", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.StatusMsg); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
 	}
 	return nil
 WriteFieldBeginError:

@@ -3,18 +3,18 @@ namespace go shared
 struct User {
     1: required i64 id; // 用户id
     2: required string name; // 用户名称
-    3: optional i64 follow_count; // 关注总数
-    4: optional i64 follower_count; // 粉丝总数
+    3: required i64 follow_count; // 关注总数
+    4: required i64 follower_count; // 粉丝总数
     5: required bool is_follow; // true-已关注，false-未关注
 }
 
 struct FriendUser {
     1: required i64 id; // 用户id
     2: required string name; // 用户名称
-    3: optional i64 follow_count; // 关注总数
-    4: optional i64 follower_count; // 粉丝总数
+    3: required i64 follow_count; // 关注总数
+    4: required i64 follower_count; // 粉丝总数
     5: required bool is_follow; // true-已关注，false-未关注
-    6: optional string Message // 和该好友的最新聊天消息
+    6: required string Message // 和该好友的最新聊天消息
     7: i64 msgType // message消息的类型，0 => 当前请求用户接收的消息， 1 => 当前请求用户发送的消息
 }
 
@@ -41,5 +41,5 @@ struct Message {
     2: i64 toUserId // 该消息接收者的id
     3: i64 fromUserId // 该消息发送者的id
     4: string content // 消息内容
-    5: optional string createTime // 消息创建时间
+    5: required string createTime // 消息创建时间
 }

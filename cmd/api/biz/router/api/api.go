@@ -89,10 +89,6 @@ func Register(r *server.Hertz) {
 			}
 		}
 		{
-			_register := _douyin.Group("/register", _registerMw()...)
-			_register.POST("/", append(_register0Mw(), api.Register)...)
-		}
-		{
 			_relation := _douyin.Group("/relation", _relationMw()...)
 			{
 				_action3 := _relation.Group("/action", _action3Mw()...)
@@ -105,6 +101,10 @@ func Register(r *server.Hertz) {
 			{
 				_login := _user.Group("/login", _loginMw()...)
 				_login.POST("/", append(_login0Mw(), api.Login)...)
+			}
+			{
+				_register := _user.Group("/register", _registerMw()...)
+				_register.POST("/", append(_register0Mw(), api.Register)...)
 			}
 		}
 	}
