@@ -4,14 +4,14 @@ namespace go basic
 
 // feed 
 struct FeedRequest {
-    1: optional i64 latestTime (api.query="latest_time")// 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
-    2: optional string token (api.query="token")// 可选参数，登录用户设置
+    1: i64 latestTime (api.query="latest_time")// 可选参数，限制返回视频的最新投稿时间戳，精确到秒，不填表示当前时间
+    2: string token (api.query="token")// 可选参数，登录用户设置
 }
 struct FeedResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: list<shared.Video> videoList // 视频列表
-    4: optional i64 nextTime // 本次返回的视频中，发布最早的时间，作为下次请求时的latest_time
+    4: i64 nextTime // 本次返回的视频中，发布最早的时间，作为下次请求时的latest_time
 }
 
 // register
@@ -21,7 +21,7 @@ struct UserRegisterRequest {
 }
 struct UserRegisterResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: i64 userId // 用户id
     4: string token // 用户鉴权token
 }
@@ -33,7 +33,7 @@ struct UserLoginRequest {
 }
 struct UserLoginResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: i64 userId // 用户id
     4: string token // 用户鉴权token
 }
@@ -45,7 +45,7 @@ struct UserRequest {
 }
 struct UserResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: shared.User user // 用户信息
 }
 
@@ -57,7 +57,7 @@ struct PublishActionRequest {
 }
 struct PublishActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
 }
 
 // publish list
@@ -67,6 +67,6 @@ struct PublishListRequest {
 }
 struct PublishListResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败
-    2: optional string statusMsg // 返回状态描述
+    2: string statusMsg // 返回状态描述
     3: list<shared.Video> videoList // 用户发布的视频列表
 }

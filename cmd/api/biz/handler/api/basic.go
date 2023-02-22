@@ -6,6 +6,8 @@ import (
 	"context"
 
 	basic "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -23,7 +25,14 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 	}
 
 	resp := new(basic.FeedResponse)
-	resp.StatusCode = consts.StatusOK
+
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	// claims := jwt.ExtractClaims(ctx, c)
+	// fmt.Printf("claims: %#v\n", claims)
+	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	uid := user.(*shared.User).ID
+
+	resp.StatusCode = int32(uid)
 	msg := req.Token
 	resp.StatusMsg = msg
 
@@ -41,8 +50,7 @@ func UserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(basic.UserResponse)
-
+	resp, _ := rpc.UserInfo(ctx, req)
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -56,26 +64,21 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(basic.UserRegisterResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	_, err = rpc.Register(ctx, req)
+	if err != nil {
+		c.JSON(consts.StatusOK, basic.UserRegisterResponse{
+			StatusCode: 1,
+			StatusMsg:  "Regsister Fail",
+		})
+		return
+	}
+	mw.JwtMiddleware.LoginHandler(ctx, c)
 }
 
 // Login .
 // @router /douyin/user/login/ [POST]
 func Login(ctx context.Context, c *app.RequestContext) {
-	var err error
-	var req basic.UserLoginRequest
-	err = c.BindAndValidate(&req)
-	if err != nil {
-		c.String(consts.StatusBadRequest, err.Error())
-		return
-	}
-
-	// resp := new(basic.UserLoginResponse)
-	resp := rpc.Login(context.Background(), req)
-	c.JSON(consts.StatusOK, resp)
+	mw.JwtMiddleware.LoginHandler(ctx, c)
 }
 
 // Publish .

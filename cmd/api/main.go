@@ -3,12 +3,15 @@
 package main
 
 import (
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 
 func main() {
 	rpc.Init()
+	mw.InitJWT()
+
 	h := server.Default()
 
 	register(h)

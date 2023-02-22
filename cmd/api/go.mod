@@ -5,11 +5,13 @@ go 1.18
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	github.com/PCBismarck/tiktok_server/cmd/user v0.0.0-20230207014632-64c0fe38b7da
+	github.com/PCBismarck/tiktok_server/cmd/user v0.0.0-20230219041649-f13b0fe97fb2
 	github.com/apache/thrift v0.17.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
 )
+
+require github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 
 require (
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect
@@ -27,6 +29,7 @@ require (
 	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
+	github.com/hertz-contrib/jwt v1.0.2
 	github.com/jhump/protoreflect v1.8.2 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.1.0 // indirect
@@ -34,7 +37,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/nyaruka/phonenumbers v1.0.55 // indirect
 	github.com/oleiade/lane v1.0.1 // indirect
-	github.com/tidwall/gjson v1.13.0 // indirect
+	github.com/tidwall/gjson v1.14.3 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
