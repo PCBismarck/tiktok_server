@@ -855,11 +855,11 @@ func (p *FavoriteListResponse) String() string {
 
 // comment
 type CommentActionRequest struct {
-	Token       string `thrift:"token,1" json:"token" query:"token"`
-	VideoId     int64  `thrift:"videoId,2" json:"videoId" query:"video_id"`
-	ActionType  int32  `thrift:"actionType,3" json:"actionType" query:"action_type"`
-	CommentText string `thrift:"commentText,4" json:"commentText" query:"comment_text"`
-	CommentId   int64  `thrift:"commentId,5" json:"commentId" query:"comment_id"`
+	Token       string  `thrift:"token,1" json:"token" query:"token"`
+	VideoId     int64   `thrift:"videoId,2" json:"videoId" query:"video_id"`
+	ActionType  int32   `thrift:"actionType,3" json:"actionType" query:"action_type"`
+	CommentText *string `thrift:"commentText,4,optional" json:"commentText,omitempty" query:"comment_text"`
+	CommentId   *int64  `thrift:"commentId,5,optional" json:"commentId,omitempty" query:"comment_id"`
 }
 
 func NewCommentActionRequest() *CommentActionRequest {
@@ -878,12 +878,22 @@ func (p *CommentActionRequest) GetActionType() (v int32) {
 	return p.ActionType
 }
 
+var CommentActionRequest_CommentText_DEFAULT string
+
 func (p *CommentActionRequest) GetCommentText() (v string) {
-	return p.CommentText
+	if !p.IsSetCommentText() {
+		return CommentActionRequest_CommentText_DEFAULT
+	}
+	return *p.CommentText
 }
 
+var CommentActionRequest_CommentId_DEFAULT int64
+
 func (p *CommentActionRequest) GetCommentId() (v int64) {
-	return p.CommentId
+	if !p.IsSetCommentId() {
+		return CommentActionRequest_CommentId_DEFAULT
+	}
+	return *p.CommentId
 }
 
 var fieldIDToName_CommentActionRequest = map[int16]string{
@@ -892,6 +902,14 @@ var fieldIDToName_CommentActionRequest = map[int16]string{
 	3: "actionType",
 	4: "commentText",
 	5: "commentId",
+}
+
+func (p *CommentActionRequest) IsSetCommentText() bool {
+	return p.CommentText != nil
+}
+
+func (p *CommentActionRequest) IsSetCommentId() bool {
+	return p.CommentId != nil
 }
 
 func (p *CommentActionRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -1024,7 +1042,7 @@ func (p *CommentActionRequest) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.CommentText = v
+		p.CommentText = &v
 	}
 	return nil
 }
@@ -1033,7 +1051,7 @@ func (p *CommentActionRequest) ReadField5(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.CommentId = v
+		p.CommentId = &v
 	}
 	return nil
 }
@@ -1135,14 +1153,16 @@ WriteFieldEndError:
 }
 
 func (p *CommentActionRequest) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("commentText", thrift.STRING, 4); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteString(p.CommentText); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetCommentText() {
+		if err = oprot.WriteFieldBegin("commentText", thrift.STRING, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.CommentText); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:
@@ -1152,14 +1172,16 @@ WriteFieldEndError:
 }
 
 func (p *CommentActionRequest) writeField5(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("commentId", thrift.I64, 5); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteI64(p.CommentId); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
+	if p.IsSetCommentId() {
+		if err = oprot.WriteFieldBegin("commentId", thrift.I64, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteI64(*p.CommentId); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
 	}
 	return nil
 WriteFieldBeginError:

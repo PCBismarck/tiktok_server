@@ -1,5 +1,7 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
+github.com/PCBismarck/tiktok_server/cmd/comment v0.0.0-20230222131005-7c21b43c5e4f h1:8Lrsl+l2EsvJFOfKKsb5ReLZmuX+74MQj+ryPuiP8hE=
+github.com/PCBismarck/tiktok_server/cmd/comment v0.0.0-20230222131005-7c21b43c5e4f/go.mod h1:rLd6KNepe8GlgqWgZP4E24znnEjEnUyPvbsD35alEuE=
 github.com/PCBismarck/tiktok_server/cmd/favorite v0.0.0-20230222085041-b57aa15ec5db h1:pKmqODTBQWxTweBet3QvRkNOWj3w5RA/6q/r3JnbWk8=
 github.com/PCBismarck/tiktok_server/cmd/favorite v0.0.0-20230222085041-b57aa15ec5db/go.mod h1:LyAHv2LiFvbfwstLR+YAFTdzul7B52utsbVMvk6XPJw=
 github.com/PCBismarck/tiktok_server/cmd/user v0.0.0-20230219041649-f13b0fe97fb2 h1:Fl6aJleUIbWwp0j8Lx/V4clLCDDomQTnmhbfWbE5P6s=
