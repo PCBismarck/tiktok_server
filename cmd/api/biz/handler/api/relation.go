@@ -30,12 +30,29 @@ func RelationAction(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	uid := user.(*shared.User).ID
-	resp, _ := rpc.RelationAction(ctx, &rrelation.RelationActionRequest{
+	resp, err := rpc.RelationAction(ctx, &rrelation.RelationActionRequest{
 		Token:      req.Token,
 		UserId:     uid,
 		ToUserId:   req.ToUserId,
 		ActionType: int64(req.ActionType),
 	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
+	var toAdd int64
+	if req.ActionType == 1 {
+		toAdd = 1
+	} else if req.ActionType == 2 {
+		toAdd = -1
+	}
+	if resp.StatusCode == 0 {
+		rpc.FollowCountAdd(ctx, uid, toAdd)
+		rpc.FollowerCountAdd(ctx, req.ToUserId, toAdd)
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -56,10 +73,17 @@ func FollowList(ctx context.Context, c *app.RequestContext) {
 	if !ok {
 		return
 	}
-	resp, _ := rpc.FollowList(ctx, &rrelation.FollowListRequest{
+	resp, err := rpc.FollowList(ctx, &rrelation.FollowListRequest{
 		UserId: req.UserId,
 		Token:  req.Token,
 	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -79,10 +103,17 @@ func FollowerList(ctx context.Context, c *app.RequestContext) {
 	if !ok {
 		return
 	}
-	resp, _ := rpc.FollowerList(ctx, &rrelation.FollowerListRequest{
+	resp, err := rpc.FollowerList(ctx, &rrelation.FollowerListRequest{
 		UserId: req.UserId,
 		Token:  req.Token,
 	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -104,10 +135,17 @@ func FriendList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, _ := rpc.FriendList(ctx, &rrelation.FriendListRequest{
+	resp, err := rpc.FriendList(ctx, &rrelation.FriendListRequest{
 		UserId: req.UserId,
 		Token:  req.Token,
 	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }

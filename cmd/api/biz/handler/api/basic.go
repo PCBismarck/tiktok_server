@@ -48,7 +48,14 @@ func UserInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp, _ := rpc.UserInfo(ctx, req)
+	resp, err := rpc.UserInfo(ctx, req)
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
