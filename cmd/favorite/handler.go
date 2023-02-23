@@ -25,13 +25,13 @@ func (s *FavoriteServiceImpl) FavoriteAction(ctx context.Context, req *favorite.
 		if _, succeed := redisconfig.CreateFavoriteAction(videoId); succeed == nil {
 			v, err := dbconfig.GetVideoByVid(videoId)
 			if err != nil {
-				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed"}
+				resp.Base = &favorite.BaseResp{StatusCode: consts.FailureCode, StatusMsg: "favorite action failed"}
 				_, _ = redisconfig.DeleteFavoriteAction(videoId)
 				return resp, nil
 			}
 			ok := dbconfig.CreateFavorite(userId, videoId, v.PlayUrl, v.CoverUrl, v.Title)
 			if !ok {
-				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed"}
+				resp.Base = &favorite.BaseResp{StatusCode: consts.FailureCode, StatusMsg: "favorite action failed"}
 				_, _ = redisconfig.DeleteFavoriteAction(videoId)
 				return resp, nil
 			}
@@ -42,7 +42,7 @@ func (s *FavoriteServiceImpl) FavoriteAction(ctx context.Context, req *favorite.
 		if _, succeed := redisconfig.DeleteFavoriteAction(videoId); succeed == nil {
 			ok := dbconfig.DeleteFavorite(userId, videoId)
 			if !ok {
-				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed"}
+				resp.Base = &favorite.BaseResp{StatusCode: consts.FailureCode, StatusMsg: "favorite action failed"}
 				_, _ = redisconfig.CreateFavoriteAction(videoId)
 				return resp, nil
 			}
