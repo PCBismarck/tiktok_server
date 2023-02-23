@@ -5,8 +5,8 @@ go 1.18
 require (
 	github.com/PCBismarck/tiktok_server/cmd/relation v0.0.0-20230223144820-3e985a17ac50
 	github.com/apache/thrift v0.13.0
-	github.com/cloudwego/kitex v0.4.4
-	gorm.io/gorm v1.24.5
+	github.com/cloudwego/kitex v0.3.2
+	gorm.io/gorm v1.23.8
 )
 
 require (

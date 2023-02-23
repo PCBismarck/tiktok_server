@@ -14,8 +14,8 @@ var relationClient relationservice.Client
 
 func initRelation() {
 	// 目前与user的端口冲突，需要进行调整
-	// 已修改
-	c, err := relationservice.NewClient("tiktok", client.WithHostPorts(":9030"))
+
+	c, err := relationservice.NewClient("tiktok", client.WithHostPorts(":9040"))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -10,13 +10,14 @@ import (
 	"github.com/PCBismarck/tiktok_server/cmd/user/db_config/consts"
 	"github.com/PCBismarck/tiktok_server/cmd/user/kitex_gen/user"
 	"github.com/PCBismarck/tiktok_server/cmd/user/kitex_gen/user/userservice"
+
 	"github.com/cloudwego/kitex/client"
 )
 
 var userClient userservice.Client
 
 func initUser() {
-	c, err := userservice.NewClient("tiktok", client.WithHostPorts(":9080"))
+	c, err := userservice.NewClient("tiktok", client.WithHostPorts(":9030"))
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -14,7 +14,10 @@ require (
 	github.com/cloudwego/kitex v0.4.4
 )
 
-require github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
+require (
+	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
+	github.com/google/go-cmp v0.5.9 // indirect
+)
 
 require (
 	github.com/bytedance/go-tagexpr/v2 v2.9.2 // indirect

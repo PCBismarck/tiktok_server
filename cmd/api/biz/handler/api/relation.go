@@ -6,6 +6,10 @@ import (
 	"context"
 
 	relation "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/relation"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
+	rrelation "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -20,8 +24,35 @@ func RelationAction(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(relation.RelationActionResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	uid := user.(*shared.User).ID
+	resp, err := rpc.RelationAction(ctx, &rrelation.RelationActionRequest{
+		Token:      req.Token,
+		UserId:     uid,
+		ToUserId:   req.ToUserId,
+		ActionType: int64(req.ActionType),
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
+	var toAdd int64
+	if req.ActionType == 1 {
+		toAdd = 1
+	} else if req.ActionType == 2 {
+		toAdd = -1
+	}
+	if resp.StatusCode == 0 {
+		rpc.FollowCountAdd(ctx, uid, toAdd)
+		rpc.FollowerCountAdd(ctx, req.ToUserId, toAdd)
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -37,8 +68,22 @@ func FollowList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(relation.RelationFollowerListResponse)
-
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	resp, err := rpc.FollowList(ctx, &rrelation.FollowListRequest{
+		UserId: req.UserId,
+		Token:  req.Token,
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -53,7 +98,22 @@ func FollowerList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(relation.RelationFollowerListResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	resp, err := rpc.FollowerList(ctx, &rrelation.FollowerListRequest{
+		UserId: req.UserId,
+		Token:  req.Token,
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -69,7 +129,23 @@ func FriendList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(relation.RelationFriendListResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+
+	resp, err := rpc.FriendList(ctx, &rrelation.FriendListRequest{
+		UserId: req.UserId,
+		Token:  req.Token,
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, map[string]interface{}{
+			"statusCode": 1,
+			"statusMsg":  err.Error(),
+		})
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }

@@ -11,17 +11,15 @@ import (
 
 func main() {
 
-	// InitDAO得在main里初始化
-	err := DAO.InitDGO()
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	addr, err := net.ResolveTCPAddr("tcp", ":9030")
+	addr, err := net.ResolveTCPAddr("tcp", "127.0.0.1:9040")
 	if err != nil {
 		panic(err)
 	}
-
+	// InitDAO得在main里初始化
+	err = DAO.InitDGO()
+	if err != nil {
+		log.Fatalln(err)
+	}
 	svr := relation.NewServer(new(RelationServiceImpl), server.WithServiceAddr(addr)) //server.WithServiceAddr(addr),
 
 	err = svr.Run()

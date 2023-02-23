@@ -98,6 +98,7 @@ func CommentAction(ctx context.Context, c *app.RequestContext) {
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
+		return
 	}
 
 	c.JSON(consts.StatusOK, map[string]interface{}{
@@ -134,6 +135,7 @@ func CommentList(ctx context.Context, c *app.RequestContext) {
 			StatusCode: 1,
 			StatusMsg:  err.Error(),
 		})
+		return
 	}
 
 	c.JSON(consts.StatusOK, map[string]interface{}{

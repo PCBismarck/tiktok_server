@@ -11,7 +11,7 @@ import (
 
 func main() {
 	dbconfig.InitDB()
-	addr, err := net.ResolveTCPAddr("tcp", ":9080")
+	addr, err := net.ResolveTCPAddr("tcp", ":9030")
 	if err != nil {
 		panic(err)
 	}
