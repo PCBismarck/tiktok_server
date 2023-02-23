@@ -12,7 +12,7 @@ import (
 
 var relationClient relationservice.Client
 
-func InitRelation() {
+func initRelation() {
 	// 目前与user的端口冲突，需要进行调整
 	c, err := relationservice.NewClient("tiktok", client.WithHostPorts(":9080"))
 	if err != nil {

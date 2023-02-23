@@ -4,7 +4,6 @@ go 1.18
 
 require (
 	github.com/apache/thrift v0.13.0
-	github.com/cloudwego/kitex v0.4.4
 	gorm.io/gorm v1.24.5
 )
 

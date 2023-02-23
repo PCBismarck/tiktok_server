@@ -5,9 +5,6 @@ go 1.18
 replace github.com/apache/thrift => github.com/apache/thrift v0.13.0
 
 require (
-	github.com/PCBismarck/tiktok_server/cmd/comment v0.0.0-20230222131005-7c21b43c5e4f
-	github.com/PCBismarck/tiktok_server/cmd/favorite v0.0.0-20230222085041-b57aa15ec5db
-	github.com/PCBismarck/tiktok_server/cmd/user v0.0.0-20230219041649-f13b0fe97fb2
 	github.com/apache/thrift v0.18.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
