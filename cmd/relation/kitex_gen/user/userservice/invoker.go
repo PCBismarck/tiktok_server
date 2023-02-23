@@ -4,7 +4,7 @@ package userservice
 
 import (
 	server "github.com/cloudwego/kitex/server"
-	user "tiktok_server-new/cmd/relation/kitex_gen/user"
+	user "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 )
 
 // NewInvoker creates a server.Invoker with the given handler and options.

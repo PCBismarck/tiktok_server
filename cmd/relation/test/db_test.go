@@ -2,17 +2,19 @@ package test
 
 import (
 	"context"
-	"github.com/cloudwego/kitex/client/callopt"
 	"log"
 	"strconv"
 	"testing"
-	"tiktok_server-new/cmd/relation/DAO"
-	"tiktok_server-new/cmd/relation/kitex_gen/relation"
-	"tiktok_server-new/cmd/relation/kitex_gen/relation/relationservice"
-	"tiktok_server-new/cmd/relation/service"
 	"time"
+
+	"github.com/PCBismarck/tiktok_server/cmd/relation/DAO"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation/relationservice"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/service"
+
+	"github.com/cloudwego/kitex/client"
+	"github.com/cloudwego/kitex/client/callopt"
 )
-import "github.com/cloudwego/kitex/client"
 
 // 测试数据库，先往里存点数据
 func TestDgraph(t *testing.T) {

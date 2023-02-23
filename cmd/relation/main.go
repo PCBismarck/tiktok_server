@@ -2,8 +2,9 @@ package main
 
 import (
 	"log"
-	"tiktok_server-new/cmd/relation/DAO"
-	relation "tiktok_server-new/cmd/relation/kitex_gen/relation/relationservice"
+
+	"github.com/PCBismarck/tiktok_server/cmd/relation/DAO"
+	relation "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation/relationservice"
 )
 
 func main() {

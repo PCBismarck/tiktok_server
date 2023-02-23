@@ -1,8 +1,10 @@
 package service
 
-import "tiktok_server-new/cmd/relation/kitex_gen/relation"
-import "tiktok_server-new/cmd/relation/errno"
-import "tiktok_server-new/cmd/relation/kitex_gen/user"
+import (
+	"github.com/PCBismarck/tiktok_server/cmd/relation/errno"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
+)
 
 func CreatRelationActionResponse(err errno.ErrNo) (resp *relation.RelationActionResponse) {
 

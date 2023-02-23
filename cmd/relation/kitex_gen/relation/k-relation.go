@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
-	"tiktok_server-new/cmd/relation/kitex_gen/user"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 
 	"github.com/apache/thrift/lib/go/thrift"
 

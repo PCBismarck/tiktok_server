@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"tiktok_server-new/cmd/relation/DAO"
-	"tiktok_server-new/cmd/relation/kitex_gen/user"
+
+	"github.com/PCBismarck/tiktok_server/cmd/relation/DAO"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 )
 
 func Check() error {
