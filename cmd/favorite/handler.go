@@ -25,41 +25,32 @@ func (s *FavoriteServiceImpl) FavoriteAction(ctx context.Context, req *favorite.
 		if _, succeed := redisconfig.CreateFavoriteAction(videoId); succeed == nil {
 			v, err := dbconfig.GetVideoByVid(videoId)
 			if err != nil {
-				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed with GetVideoByVid"}
+				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed"}
 				_, _ = redisconfig.DeleteFavoriteAction(videoId)
 				return resp, nil
 			}
 			ok := dbconfig.CreateFavorite(userId, videoId, v.PlayUrl, v.CoverUrl, v.Title)
 			if !ok {
-				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed with CreateFavorite"}
+				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed"}
 				_, _ = redisconfig.DeleteFavoriteAction(videoId)
 				return resp, nil
 			}
-			resp.Base = &favorite.BaseResp{
-				StatusCode: consts.SuccessCode,
-				StatusMsg:  "favorite action success",
-			}
+			resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action success"}
 			return resp, nil
 		}
 	case 2:
 		if _, succeed := redisconfig.DeleteFavoriteAction(videoId); succeed == nil {
 			ok := dbconfig.DeleteFavorite(userId, videoId)
 			if !ok {
-				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed with DeleteFavorite"}
+				resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action failed"}
 				_, _ = redisconfig.CreateFavoriteAction(videoId)
 				return resp, nil
 			}
-			resp.Base = &favorite.BaseResp{
-				StatusCode: consts.SuccessCode,
-				StatusMsg:  "favorite action success",
-			}
+			resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "favorite action success"}
 			return resp, nil
 		}
 	}
-	resp.Base = &favorite.BaseResp{
-		StatusCode: consts.FailureCode,
-		StatusMsg:  "favorite action failed with all",
-	}
+	resp.Base = &favorite.BaseResp{StatusCode: consts.FailureCode, StatusMsg: "favorite action failed"}
 	return resp, nil
 }
 
@@ -73,10 +64,7 @@ func (s *FavoriteServiceImpl) FavoriteList(ctx context.Context, req *favorite.Fa
 	favoriteList, err := dbconfig.GetFavoriteList(userId)
 
 	if err != nil {
-		resp.Base = &favorite.BaseResp{
-			StatusCode: consts.FailureCode,
-			StatusMsg:  "Get favorite list failed",
-		}
+		resp.Base = &favorite.BaseResp{StatusCode: consts.FailureCode, StatusMsg: "get favorite list failed"}
 		return resp, nil
 	}
 
@@ -96,10 +84,7 @@ func (s *FavoriteServiceImpl) FavoriteList(ctx context.Context, req *favorite.Fa
 		videos = append(videos, newVideo)
 	}
 
-	resp.Base = &favorite.BaseResp{
-		StatusCode: consts.SuccessCode,
-		StatusMsg:  "Get favorite list success",
-	}
+	resp.Base = &favorite.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: "get favorite list success"}
 	resp.VideoList = videos
 	return resp, nil
 }

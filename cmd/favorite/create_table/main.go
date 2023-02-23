@@ -7,6 +7,6 @@ import (
 
 func main() {
 	dbconfig.InitDB()
-	dbconfig.DB.AutoMigrate(&entity.Favorite{})
-	//dbconfig.DB.AutoMigrate(&entity.Video{})
+	//dbconfig.DB.AutoMigrate(&entity.Favorite{})
+	dbconfig.DB.AutoMigrate(&entity.Video{})
 }

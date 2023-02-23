@@ -6,17 +6,17 @@ import (
 )
 
 func GetFavoriteList(userId int64) (res []entity.Favorite, err error) {
-	var favorite []entity.Favorite
-	result := DB.Where("user_id = ?", userId).Find(&favorite)
+	var favoriteData []entity.Favorite
+	result := DB.Where("user_id = ?", userId).Find(&favoriteData)
 	if result.Error != nil {
 		return nil, result.Error
 	}
-	return favorite, nil
+	return favoriteData, nil
 }
 
 func GetVideoByVid(videoId int64) (res *entity.Video, err error) {
 	var video entity.Video
-	result := DB.Where("video_id=?", videoId).Find(&video)
+	result := DB.Where("id=?", videoId).Find(&video)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -26,7 +26,7 @@ func GetVideoByVid(videoId int64) (res *entity.Video, err error) {
 func GetUserInfoByUid(userId int64) *favorite.UserInfo {
 	a := GetUserByUid(userId)
 	user := favorite.UserInfo{
-		UserId:        userId,
+		UserId:        int64(a.ID),
 		UserName:      a.Username,
 		FollowCount:   &a.FollowCount,
 		FollowerCount: &a.FollowerCount,
@@ -35,8 +35,8 @@ func GetUserInfoByUid(userId int64) *favorite.UserInfo {
 	return &user
 }
 
-func GetUserByUid(userId int64) (user *entity.User) {
-	var a entity.User
+func GetUserByUid(userId int64) (user *entity.Account) {
+	var a entity.Account
 	DB.First(&a, userId)
 	return &a
 }
