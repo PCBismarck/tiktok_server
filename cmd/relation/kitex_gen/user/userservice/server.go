@@ -2,8 +2,8 @@
 package userservice
 
 import (
+	user "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 	server "github.com/cloudwego/kitex/server"
-	user "tiktok_server-new/cmd/relation/kitex_gen/user"
 )
 
 // NewServer creates a server.Server with the given handler and options.

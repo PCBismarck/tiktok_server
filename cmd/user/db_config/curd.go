@@ -19,6 +19,8 @@ func CreateAccount(username string, password string) (uid int64, err error) {
 		FollowerCount: 0,
 	}
 	result := DB.Create(&user)
+	// TODO 这里需要RPC调用relation的CreateUser接口
+
 	if result.Error != nil {
 		return 0, result.Error
 	}
@@ -27,6 +29,8 @@ func CreateAccount(username string, password string) (uid int64, err error) {
 
 func QueryAccount(username string) (user *Account, existed bool) {
 	var u Account
+	// TODO 这里可以用RPC调用relation的UserInfo接口获得关注数和粉丝数
+
 	result := DB.Where(
 		"username = ?", username).First(&u)
 	if result.Error != nil {

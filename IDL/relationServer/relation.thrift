@@ -30,7 +30,10 @@ struct FollowerListRequest{
   1: i64 user_id                             // 用户id
   2: string token                            // 用户鉴权token
 }
-
+struct UserInfoRequest{
+  1: i64 user_id                             // 用户id
+  2: string token                            // 用户鉴权token
+}
 struct FollowerListResponse {
   1: i64 status_code                     // 状态码，0-成功，其他值-失败
   2: string status_msg                  // 返回状态描述
@@ -40,6 +43,11 @@ struct FollowerListResponse {
 struct FriendListRequest {
   1: i64 user_id                             // 用户id
   2: string token                            // 用户鉴权token
+}
+
+struct CreateUserRequest {
+  1: string user_id                             // 用户id
+  2: string name                            // 用户姓名
 }
 
 struct FriendListResponse {
@@ -53,5 +61,6 @@ service RelationService {
     FollowListResponse FollowList(1:FollowListRequest req)  // 获取用户关注列表
     FollowerListResponse FollowerList(1:FollowerListRequest req)  // 获取用户粉丝列表
     FriendListResponse FriendList(1:FriendListRequest req)  // 获取用户好友列表
-
+    user.User UserInfo(1:UserInfoRequest req)  // 获取用户好友列表
+    bool CreateUser(1:CreateUserRequest req) //创建用户
 }

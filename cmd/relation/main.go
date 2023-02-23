@@ -1,9 +1,12 @@
 package main
 
 import (
+	"github.com/cloudwego/kitex/server"
 	"log"
-	"tiktok_server-new/cmd/relation/DAO"
-	relation "tiktok_server-new/cmd/relation/kitex_gen/relation/relationservice"
+	"net"
+
+	"github.com/PCBismarck/tiktok_server/cmd/relation/DAO"
+	relation "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation/relationservice"
 )
 
 func main() {
@@ -13,7 +16,13 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
-	svr := relation.NewServer(new(RelationServiceImpl)) //server.WithServiceAddr(addr),
+
+	addr, err := net.ResolveTCPAddr("tcp", ":9030")
+	if err != nil {
+		panic(err)
+	}
+
+	svr := relation.NewServer(new(RelationServiceImpl), server.WithServiceAddr(addr)) //server.WithServiceAddr(addr),
 
 	err = svr.Run()
 	if err != nil {

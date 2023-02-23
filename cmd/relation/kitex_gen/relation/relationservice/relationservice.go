@@ -4,9 +4,10 @@ package relationservice
 
 import (
 	"context"
+	relation "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation"
+	user "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	kitex "github.com/cloudwego/kitex/pkg/serviceinfo"
-	relation "tiktok_server-new/cmd/relation/kitex_gen/relation"
 )
 
 func serviceInfo() *kitex.ServiceInfo {
@@ -23,6 +24,8 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"FollowList":     kitex.NewMethodInfo(followListHandler, newRelationServiceFollowListArgs, newRelationServiceFollowListResult, false),
 		"FollowerList":   kitex.NewMethodInfo(followerListHandler, newRelationServiceFollowerListArgs, newRelationServiceFollowerListResult, false),
 		"FriendList":     kitex.NewMethodInfo(friendListHandler, newRelationServiceFriendListArgs, newRelationServiceFriendListResult, false),
+		"UserInfo":       kitex.NewMethodInfo(userInfoHandler, newRelationServiceUserInfoArgs, newRelationServiceUserInfoResult, false),
+		"CreateUser":     kitex.NewMethodInfo(createUserHandler, newRelationServiceCreateUserArgs, newRelationServiceCreateUserResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "relation",
@@ -110,6 +113,42 @@ func newRelationServiceFriendListResult() interface{} {
 	return relation.NewRelationServiceFriendListResult()
 }
 
+func userInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*relation.RelationServiceUserInfoArgs)
+	realResult := result.(*relation.RelationServiceUserInfoResult)
+	success, err := handler.(relation.RelationService).UserInfo(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newRelationServiceUserInfoArgs() interface{} {
+	return relation.NewRelationServiceUserInfoArgs()
+}
+
+func newRelationServiceUserInfoResult() interface{} {
+	return relation.NewRelationServiceUserInfoResult()
+}
+
+func createUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*relation.RelationServiceCreateUserArgs)
+	realResult := result.(*relation.RelationServiceCreateUserResult)
+	success, err := handler.(relation.RelationService).CreateUser(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = &success
+	return nil
+}
+func newRelationServiceCreateUserArgs() interface{} {
+	return relation.NewRelationServiceCreateUserArgs()
+}
+
+func newRelationServiceCreateUserResult() interface{} {
+	return relation.NewRelationServiceCreateUserResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -155,6 +194,26 @@ func (p *kClient) FriendList(ctx context.Context, req *relation.FriendListReques
 	_args.Req = req
 	var _result relation.RelationServiceFriendListResult
 	if err = p.c.Call(ctx, "FriendList", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UserInfo(ctx context.Context, req *relation.UserInfoRequest) (r *user.User, err error) {
+	var _args relation.RelationServiceUserInfoArgs
+	_args.Req = req
+	var _result relation.RelationServiceUserInfoResult
+	if err = p.c.Call(ctx, "UserInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CreateUser(ctx context.Context, req *relation.CreateUserRequest) (r bool, err error) {
+	var _args relation.RelationServiceCreateUserArgs
+	_args.Req = req
+	var _result relation.RelationServiceCreateUserResult
+	if err = p.c.Call(ctx, "CreateUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

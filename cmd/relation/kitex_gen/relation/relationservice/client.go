@@ -4,9 +4,10 @@ package relationservice
 
 import (
 	"context"
+	relation "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation"
+	user "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 	client "github.com/cloudwego/kitex/client"
 	callopt "github.com/cloudwego/kitex/client/callopt"
-	relation "tiktok_server-new/cmd/relation/kitex_gen/relation"
 )
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
@@ -15,6 +16,8 @@ type Client interface {
 	FollowList(ctx context.Context, req *relation.FollowListRequest, callOptions ...callopt.Option) (r *relation.FollowListResponse, err error)
 	FollowerList(ctx context.Context, req *relation.FollowerListRequest, callOptions ...callopt.Option) (r *relation.FollowerListResponse, err error)
 	FriendList(ctx context.Context, req *relation.FriendListRequest, callOptions ...callopt.Option) (r *relation.FriendListResponse, err error)
+	UserInfo(ctx context.Context, req *relation.UserInfoRequest, callOptions ...callopt.Option) (r *user.User, err error)
+	CreateUser(ctx context.Context, req *relation.CreateUserRequest, callOptions ...callopt.Option) (r bool, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -64,4 +67,14 @@ func (p *kRelationServiceClient) FollowerList(ctx context.Context, req *relation
 func (p *kRelationServiceClient) FriendList(ctx context.Context, req *relation.FriendListRequest, callOptions ...callopt.Option) (r *relation.FriendListResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.FriendList(ctx, req)
+}
+
+func (p *kRelationServiceClient) UserInfo(ctx context.Context, req *relation.UserInfoRequest, callOptions ...callopt.Option) (r *user.User, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UserInfo(ctx, req)
+}
+
+func (p *kRelationServiceClient) CreateUser(ctx context.Context, req *relation.CreateUserRequest, callOptions ...callopt.Option) (r bool, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CreateUser(ctx, req)
 }

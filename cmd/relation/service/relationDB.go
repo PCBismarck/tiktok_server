@@ -6,8 +6,9 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"tiktok_server-new/cmd/relation/DAO"
-	"tiktok_server-new/cmd/relation/kitex_gen/user"
+
+	"github.com/PCBismarck/tiktok_server/cmd/relation/DAO"
+	"github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/user"
 )
 
 func Check() error {
@@ -47,7 +48,7 @@ func FollowList(ctx context.Context, uid int64) ([]*user.User, error) {
 	us := make([]*user.User, len(u.Follows))
 	for i, uu := range u.Follows {
 		uid, _ := strconv.ParseInt(uu.Uid, 0, 64)
-		us[i] = &user.User{Id: uid, Name: uu.Name, FollowCount: uu.FollowsCount, FollowerCount: uu.FollowersCount, IsFollow: true}
+		us[i] = &user.User{Id: uid, Name: uu.Name, FollowCount: &uu.FollowsCount, FollowerCount: &uu.FollowersCount, IsFollow: true}
 	}
 	return us, nil
 }
@@ -66,7 +67,7 @@ func FollowerList(ctx context.Context, uid int64) ([]*user.User, error) {
 	}
 	for i, value := range chooseUser.Followers {
 		uid, _ := strconv.ParseInt(value.Uid, 0, 64)
-		followerUser = append(followerUser, &user.User{Id: uid, Name: value.Name, FollowCount: value.FollowsCount, FollowerCount: value.FollowersCount})
+		followerUser = append(followerUser, &user.User{Id: uid, Name: value.Name, FollowCount: &value.FollowsCount, FollowerCount: &value.FollowersCount})
 		if _, ok := m[chooseUser.Followers[i].Uid]; ok {
 			followerUser[len(followerUser)-1].IsFollow = true
 		}
@@ -84,8 +85,26 @@ func FriendList(ctx context.Context, uid int64) ([]*user.User, error) {
 	us := make([]*user.User, len(u.Friends))
 	for i, uu := range u.Friends {
 		uid, _ := strconv.ParseInt(uu.Uid, 0, 64)
-		us[i] = &user.User{Id: uid, Name: uu.Name, FollowCount: uu.FollowsCount, FollowerCount: uu.FollowersCount, IsFollow: true}
+		us[i] = &user.User{Id: uid, Name: uu.Name, FollowCount: &uu.FollowsCount, FollowerCount: &uu.FollowersCount, IsFollow: true}
 	}
 	return us, nil
+
+}
+
+func UserInfo(ctx context.Context, uid int64) (*user.User, error) {
+
+	if err := Check(); err != nil {
+		log.Println(err.Error())
+	}
+	var u, _ = DAO.UserInfo(ctx, uid)
+	uuid, _ := strconv.ParseInt(u.Uid, 0, 64)
+	uu := &user.User{
+		Id:            uuid,
+		Name:          u.Name,
+		FollowCount:   &u.FollowsCount,
+		FollowerCount: &u.FollowersCount,
+		IsFollow:      false,
+	}
+	return uu, nil
 
 }

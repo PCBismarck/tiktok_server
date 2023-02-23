@@ -43,7 +43,7 @@ func InitDGO() error {
 		dialOpts := append([]grpc.DialOption{},
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)))
-		d, err := grpc.Dial("localhost:9080", dialOpts...) //这里注意修改grpc端口，我的win10 9080端口是预留端口
+		d, err := grpc.Dial("101.43.172.154:9080", dialOpts...) //这里注意修改grpc端口，我的win10 9080端口是预留端口
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -81,6 +81,36 @@ func GetFollowList(ctx context.Context, u int64) (RespUser, error) {
 			count(~follows)
 		}
 	count(follows)
+	}
+	}
+`
+	response, err := DGO.NewTxn().Query(ctx, fmt.Sprintf(q, u))
+	if err != nil {
+		log.Println(err)
+		return RespUser{}, err
+	}
+	log.Println(response.String())
+	var userlist UserList
+	err = json.Unmarshal(response.Json, &userlist)
+	if err != nil {
+		log.Println(err)
+		return RespUser{}, err
+	}
+	if len(userlist.FollowList) == 0 {
+		log.Println("FollowList 没有数据")
+		return RespUser{}, err
+	}
+	return userlist.FollowList[0], err
+
+}
+func UserInfo(ctx context.Context, u int64) (RespUser, error) {
+	q := `
+	{
+	followlist(func: uid(%d)){
+		uid
+		name
+	count(follows)
+	count(~follows)
 	}
 	}
 `
@@ -179,7 +209,7 @@ func CreatDefaultSchema(ctx context.Context) error {
 			follow: [RespUser]
 		}
 	`
-	log.Println("TODO: 反向边索引还未添加")
+	//log.Println("TODO: 反向边索引还未添加")
 	return CreatSchema(ctx, schema)
 }
 func UpsertUser(ctx context.Context, u DgraphUser) error {

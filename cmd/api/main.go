@@ -14,6 +14,15 @@ func main() {
 
 	h := server.Default()
 
+	// group := h.Group("/douyin/publish")
+	// group.Use(mw.JwtMiddleware.MiddlewareFunc())
+	// group = h.Group("/douyin/comment")
+	// group.Use(mw.JwtMiddleware.MiddlewareFunc())
+	// group = h.Group("/douyin/relation")
+	// group.Use(mw.JwtMiddleware.MiddlewareFunc())
+	// group = h.Group("/douyin/feed")
+	// group.Use(mw.JwtMiddleware.MiddlewareFunc())
+
 	register(h)
 	h.Spin()
 }

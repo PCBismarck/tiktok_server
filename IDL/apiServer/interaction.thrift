@@ -27,8 +27,8 @@ struct CommentActionRequest {
     1: string token (api.query="token")// 用户鉴权token
     2: i64 videoId (api.query="video_id")// 视频id
     3: i32 actionType (api.query="action_type")// 1-发布评论，2-删除评论
-    4: string commentText (api.query="comment_text")// 用户填写的评论内容，在action_type=1的时候使用
-    5: i64 commentId (api.query="comment_id")// 要删除的评论id，在action_type=2的时候使用
+    4: optional string commentText (api.query="comment_text")// 用户填写的评论内容，在action_type=1的时候使用
+    5: optional i64 commentId (api.query="comment_id")// 要删除的评论id，在action_type=2的时候使用
 }
 struct CommentActionResponse {
     1: i32 statusCode // 状态码，0-成功，其他值-失败

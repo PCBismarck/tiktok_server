@@ -6,6 +6,11 @@ import (
 	"context"
 
 	interaction "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/interaction"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
+	"github.com/PCBismarck/tiktok_server/cmd/comment/kitex_gen/comment"
+	"github.com/PCBismarck/tiktok_server/cmd/favorite/kitex_gen/favorite"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -20,9 +25,20 @@ func FavrotieAction(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	uid := user.(*shared.User).ID
+	fresp, _ := rpc.FavoriteAction(ctx, &favorite.FavoriteActionRequest{
+		UserId:     uid,
+		VideoId:    req.VideoId,
+		ActionType: req.ActionType,
+	})
 	resp := new(interaction.FavoriteActionResponse)
-
+	resp.StatusMsg = fresp.Base.StatusMsg
+	resp.StatusCode = fresp.Base.StatusCode
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -36,9 +52,18 @@ func FavoriteList(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	fresp, _ := rpc.FavoriteList(ctx, &favorite.FavoriteListRequest{
+		UserId: req.UserId,
+	})
 
 	resp := new(interaction.FavoriteListResponse)
-
+	resp.StatusCode = fresp.Base.StatusCode
+	resp.StatusMsg = fresp.Base.StatusMsg
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -53,9 +78,33 @@ func CommentAction(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(interaction.CommentActionResponse)
+	// 鉴权并获取uid
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	uid := user.(*shared.User).ID
 
-	c.JSON(consts.StatusOK, resp)
+	resp, err := rpc.CommentAction(ctx, &comment.CommentActionRequest{
+		UserId:      uid,
+		VideoId:     req.VideoId,
+		ActionType:  req.ActionType,
+		CommentText: req.CommentText,
+		CommentId:   req.CommentId,
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, interaction.CommentListResponse{
+			StatusCode: 1,
+			StatusMsg:  err.Error(),
+		})
+	}
+
+	c.JSON(consts.StatusOK, map[string]interface{}{
+		"statusCode": resp.Base.StatusCode,
+		"statusMsg":  resp.Base.StatusMsg,
+		"comment":    resp.Comment,
+	})
 }
 
 // CommentList .
@@ -69,7 +118,27 @@ func CommentList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(interaction.CommentListResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	uid := user.(*shared.User).ID
 
-	c.JSON(consts.StatusOK, resp)
+	resp, err := rpc.CommentList(ctx, &comment.CommentListRequest{
+		UserId:  uid,
+		VideoId: req.VideoId,
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, interaction.CommentListResponse{
+			StatusCode: 1,
+			StatusMsg:  err.Error(),
+		})
+	}
+
+	c.JSON(consts.StatusOK, map[string]interface{}{
+		"statusCode":  resp.Base.StatusCode,
+		"statusMsg":   resp.Base.StatusMsg,
+		"commentList": resp.CommentList,
+	})
 }
