@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/PCBismarck/tiktok_server/cmd/comment/consts"
 	dbconfig "github.com/PCBismarck/tiktok_server/cmd/comment/db_config"
-	comment "github.com/PCBismarck/tiktok_server/cmd/comment/kitex_gen/comment"
+	"github.com/PCBismarck/tiktok_server/cmd/comment/kitex_gen/comment"
 	"time"
 )
 
@@ -28,8 +28,8 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 
 	switch actionType {
 	case 1:
-		success = "Create comment success"
-		failed = "Create comment failed"
+		success = "create comment success"
+		failed = "create comment failed"
 		commentid, err := dbconfig.CreateComment(videoId, userId, *commentText)
 		if err != nil {
 			resp.Base = &comment.BaseResp{StatusCode: consts.FailureCode, StatusMsg: &failed}
@@ -46,8 +46,8 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 		}
 		return resp, nil
 	case 2:
-		success = "Delete comment success"
-		failed = "Delete comment failed"
+		success = "delete comment success"
+		failed = "delete comment failed"
 		ok := dbconfig.DeleteComment(videoId, *commentId)
 		if ok {
 			resp.Base = &comment.BaseResp{StatusCode: consts.SuccessCode, StatusMsg: &success}
@@ -58,7 +58,7 @@ func (s *CommentServiceImpl) CommentAction(ctx context.Context, req *comment.Com
 		}
 		return resp, nil
 	}
-	failed = "ActionType is illegal"
+	failed = "actionType is illegal"
 	resp.Base = &comment.BaseResp{StatusCode: consts.FailureCode, StatusMsg: &failed}
 	resp.Comment = commentInfo
 	return resp, nil
@@ -71,8 +71,8 @@ func (s *CommentServiceImpl) CommentList(ctx context.Context, req *comment.Comme
 
 	resp = new(comment.CommentListResponse)
 
-	success = "Get comment list success"
-	failed = "Get comment list failed"
+	success = "get comment list success"
+	failed = "get comment list failed"
 
 	comments, err := dbconfig.GetCommentsByVid(videoId)
 

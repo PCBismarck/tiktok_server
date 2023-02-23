@@ -16,7 +16,8 @@ func CreateComment(videoId int64, userId int64, commentText string) (commentId i
 		return 0, result.Error
 	}
 	var video entity.Video
-	DB.First(&video, videoId)
+	//DB.First(&video, videoId)
+	DB.Where("id=?", videoId).Find(&video)
 	video.CommentCount++
 	DB.Save(&video)
 	return int64(commentData.ID), nil
@@ -26,7 +27,7 @@ func DeleteComment(videoId int64, commentId int64) bool {
 	result := DB.Where("id=?", commentId).Delete(&entity.Comment{})
 	var video entity.Video
 	//DB.First(&video, videoId)
-	DB.Where("video_id=?", videoId).Find(&video)
+	DB.Where("id=?", videoId).Find(&video)
 	video.CommentCount--
 	DB.Save(&video)
 	return result.Error == nil
@@ -44,8 +45,8 @@ func GetUserInfoByUid(userId int64) *comment.UserInfo {
 	return &user
 }
 
-func GetUserByUid(userId int64) (user *entity.User) {
-	var a entity.User
+func GetUserByUid(userId int64) (user *entity.Account) {
+	var a entity.Account
 	DB.First(&a, userId)
 	return &a
 }
