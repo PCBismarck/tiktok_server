@@ -6,6 +6,10 @@ import (
 	"context"
 
 	relation "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/relation"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
+	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
+	rrelation "github.com/PCBismarck/tiktok_server/cmd/relation/kitex_gen/relation"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -20,8 +24,18 @@ func RelationAction(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(relation.RelationActionResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	user, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	uid := user.(*shared.User).ID
+	resp, _ := rpc.RelationAction(ctx, &rrelation.RelationActionRequest{
+		Token:      req.Token,
+		UserId:     uid,
+		ToUserId:   req.ToUserId,
+		ActionType: int64(req.ActionType),
+	})
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -37,8 +51,15 @@ func FollowList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(relation.RelationFollowerListResponse)
-
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	resp, _ := rpc.FollowList(ctx, &rrelation.FollowListRequest{
+		UserId: req.UserId,
+		Token:  req.Token,
+	})
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -53,7 +74,15 @@ func FollowerList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(relation.RelationFollowerListResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+	resp, _ := rpc.FollowerList(ctx, &rrelation.FollowerListRequest{
+		UserId: req.UserId,
+		Token:  req.Token,
+	})
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -69,7 +98,16 @@ func FriendList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	resp := new(relation.RelationFriendListResponse)
+	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	_, ok := c.Get(mw.JwtMiddleware.IdentityKey)
+	if !ok {
+		return
+	}
+
+	resp, _ := rpc.FriendList(ctx, &rrelation.FriendListRequest{
+		UserId: req.UserId,
+		Token:  req.Token,
+	})
 
 	c.JSON(consts.StatusOK, resp)
 }
