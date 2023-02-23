@@ -4,6 +4,7 @@ package api
 
 import (
 	"context"
+	"strconv"
 
 	basic "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
@@ -23,17 +24,20 @@ func Feed(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(basic.FeedResponse)
-
-	mw.JwtMiddleware.MiddlewareFunc()(ctx, c)
+	//根据jwt解析出当前用户id
+	mw.JwtMiddleware.LoginHandler(ctx, c)
 	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	// 提取uid
 	uid := user.(*shared.User).ID
-
-	resp.StatusCode = int32(uid)
-	msg := req.Token
-	resp.StatusMsg = msg
-
+	req.Token = strconv.Itoa(int(uid))
+	resp, err := rpc.Feed(ctx, req)
+	if err != nil {
+		c.JSON(consts.StatusOK, basic.UserRegisterResponse{
+			StatusCode: 1,
+			StatusMsg:  "Feed Fail",
+		})
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -112,8 +116,19 @@ func PublishList(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(basic.PublishListResponse)
-
+	//根据jwt解析出当前用户id
+	mw.JwtMiddleware.LoginHandler(ctx, c)
+	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	// 提取uid
+	uid := user.(*shared.User).ID
+	req.Token = strconv.Itoa(int(uid))
+	resp, err := rpc.PublishList(ctx, req)
+	if err != nil {
+		c.JSON(consts.StatusOK, basic.UserRegisterResponse{
+			StatusCode: 1,
+			StatusMsg:  "PublishList service Fail",
+		})
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
