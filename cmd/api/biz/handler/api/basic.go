@@ -151,6 +151,8 @@ func Publish(ctx context.Context, c *app.RequestContext) {
 		})
 		return
 	}
+	resp.StatusCode = 0
+	resp.StatusMsg = title + " uploaded successfully"
 	c.JSON(consts.StatusOK, resp)
 }
 
