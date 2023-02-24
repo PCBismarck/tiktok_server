@@ -5,4 +5,5 @@ func Init() {
 	initFavorite()
 	initComment()
 	initRelation()
+	initVideo()
 }

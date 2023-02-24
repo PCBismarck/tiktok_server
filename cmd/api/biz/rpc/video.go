@@ -9,10 +9,13 @@ import (
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
 	"github.com/PCBismarck/tiktok_server/cmd/video/kitex_gen/video"
+
 	//"github.com/PCBismarck/tiktok_server/cmd/user/kitex_gen/user"
 	"github.com/PCBismarck/tiktok_server/cmd/video/kitex_gen/video/videoservice"
 	"github.com/cloudwego/kitex/client"
 )
+
+const BaseUrl = "http://101.43.172.154:8888/static/"
 
 var videoClient videoservice.Client
 
@@ -31,16 +34,16 @@ func Feed(ctx context.Context, req basic.FeedRequest) (resp *basic.FeedResponse,
 
 	// 构造creq请求
 	var creq video.FeedRequest
-	uid ,err := strconv.ParseInt(req.Token, 10, 64)
+	uid, err := strconv.ParseInt(req.Token, 10, 64)
 
 	//转化
 	creq.LatestTime = req.GetLatestTime()
 	creq.UserId = uid
-	
+
 	cresp, err := videoClient.Feed(ctx, (*video.FeedRequest)(&creq))
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
-		return 
+		return
 	}
 	resp.NextTime = cresp.NextTime
 	resp.VideoList = ChangeSharedFormat(cresp.GetVideoList())
@@ -51,14 +54,14 @@ func Feed(ctx context.Context, req basic.FeedRequest) (resp *basic.FeedResponse,
 // token will not be set here
 // according to the uid to find all videos which created by author
 func PublishList(ctx context.Context, req basic.PublishListRequest) (resp *basic.PublishListResponse, err error) {
-	
+
 	//构造creq请求
 	var creq video.PublishListRequest
-	uid ,err := strconv.ParseInt(req.Token, 10, 64)
+	uid, err := strconv.ParseInt(req.Token, 10, 64)
 
 	//转化
 	creq.UserId = uid
-	cresp, err := videoClient.PublishList(ctx,(*video.PublishListRequest)(&creq))
+	cresp, err := videoClient.PublishList(ctx, (*video.PublishListRequest)(&creq))
 
 	if err != nil {
 		fmt.Printf("err: %v\n", err)
@@ -68,11 +71,10 @@ func PublishList(ctx context.Context, req basic.PublishListRequest) (resp *basic
 	return
 }
 
-func PublishAction(ctx context.Context, c video.FeedRequest) (resp *video.FeedResponse, err error) {
-	
+func PublishAction(ctx context.Context, req video.PublishActionRequest) (resp *video.PublishActionResponse, err error) {
+	resp, err = videoClient.PublishAction(ctx, &req)
 	return
 }
-
 
 func ChangeSharedFormat(input []*video.Video) (res []*shared.Video) {
 	var videoList []*shared.Video
@@ -83,7 +85,7 @@ func ChangeSharedFormat(input []*video.Video) (res []*shared.Video) {
 		newAuthor.FollowCount = *v.Author.FollowCount
 		newAuthor.FollowerCount = *v.Author.FollowerCount
 		newAuthor.Name = v.Author.Name
-		newVideo := &shared.Video {
+		newVideo := &shared.Video{
 			ID:            v.VideoId,
 			Author:        newAuthor,
 			PlayURL:       v.PlayUrl,
@@ -97,5 +99,3 @@ func ChangeSharedFormat(input []*video.Video) (res []*shared.Video) {
 	}
 	return videoList
 }
-
-

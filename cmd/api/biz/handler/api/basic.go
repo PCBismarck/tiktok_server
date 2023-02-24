@@ -4,12 +4,15 @@ package api
 
 import (
 	"context"
+	"os/exec"
+	"path/filepath"
 	"strconv"
 
 	basic "github.com/PCBismarck/tiktok_server/cmd/api/biz/model/basic"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/model/shared"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/mw"
 	"github.com/PCBismarck/tiktok_server/cmd/api/biz/rpc"
+	"github.com/PCBismarck/tiktok_server/cmd/video/kitex_gen/video"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -100,9 +103,54 @@ func Publish(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
+	//根据jwt解析出当前用户id
+	mw.JwtMiddleware.LoginHandler(ctx, c)
+	user, _ := c.Get(mw.JwtMiddleware.IdentityKey)
+	// 提取uid
+	uid := user.(*shared.User).ID
 	resp := new(basic.PublishActionResponse)
+	data, err := c.FormFile("data")
+	if err != nil {
+		c.JSON(consts.StatusOK, basic.PublishActionResponse{
+			StatusCode: 1,
+			StatusMsg:  err.Error(),
+		})
+		return
+	}
 
+	title := filepath.Base(data.Filename)
+	presp, err := rpc.PublishAction(ctx, video.PublishActionRequest{
+		UserId: uid,
+		Title:  title,
+	})
+	if err != nil {
+		c.JSON(consts.StatusOK, basic.PublishActionResponse{
+			StatusCode: 1,
+			StatusMsg:  err.Error(),
+		})
+		return
+	}
+
+	// statuscode 中存的是 vid
+	fileName := strconv.Itoa(int(presp.BaseResp.StatusCode))
+	saveFile := filepath.Join("./public/video/", fileName+".mp4")
+	coverPath := filepath.Join("./public/cover/", fileName+".png")
+	command := exec.Command(
+		"ffmpeg", "-i", saveFile, "-ss", "00:00:00", "-frames:v", "1", coverPath)
+	if err := c.SaveUploadedFile(data, saveFile); err != nil {
+		c.JSON(consts.StatusOK, basic.PublishActionResponse{
+			StatusCode: 1,
+			StatusMsg:  err.Error(),
+		})
+		return
+	}
+	if out, err_cover := command.CombinedOutput(); err_cover != nil {
+		c.JSON(consts.StatusOK, basic.PublishActionResponse{
+			StatusCode: 1,
+			StatusMsg:  err_cover.Error() + "\n" + string(out),
+		})
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }
 

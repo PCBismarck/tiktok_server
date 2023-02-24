@@ -6,8 +6,8 @@ import (
 
 	userdao "github.com/PCBismarck/tiktok_server/cmd/user/db_config"
 
-	videodao "github.com/PCBismarck/tiktok_server/cmd/video/db/dao"
 	"github.com/PCBismarck/tiktok_server/cmd/user/kitex_gen/user"
+	videodao "github.com/PCBismarck/tiktok_server/cmd/video/db/dao"
 	video "github.com/PCBismarck/tiktok_server/cmd/video/kitex_gen/video"
 )
 
@@ -25,17 +25,17 @@ func (s *VideoServiceImpl) Feed(ctx context.Context, req *video.FeedRequest) (re
 	uid := req.UserId
 	resp = new(video.FeedResponse)
 	if req.UserId < 0 {
-		resp.BaseResp= &video.BaseResp{
-			StatusCode: int64(video.ErrCode_ParamErrCode),
+		resp.BaseResp = &video.BaseResp{
+			StatusCode:    int64(video.ErrCode_ParamErrCode),
 			StatusMessage: "Parameter is wrong with userId",
 		}
-		return 
+		return
 	}
 	// 获取视频流
 	videos, nexttime, err := videodao.GetVideosForFeed(req.UserId, req.LatestTime)
 	if err != nil {
-		resp.BaseResp= &video.BaseResp{
-			StatusCode: int64(video.ErrCode_ServiceErrCode),
+		resp.BaseResp = &video.BaseResp{
+			StatusCode:    int64(video.ErrCode_ServiceErrCode),
 			StatusMessage: "Feed Service Failed with unknown error",
 		}
 		return
@@ -44,10 +44,10 @@ func (s *VideoServiceImpl) Feed(ctx context.Context, req *video.FeedRequest) (re
 	videos_list := make([]*video.Video, 0)
 	for _, v := range videos {
 		var u user.User
-		ac, err1:= userdao.GetAccountInfoByUID(uid)
+		ac, err1 := userdao.GetAccountInfoByUID(uid)
 		if err1 != nil {
-			resp.BaseResp= &video.BaseResp{
-				StatusCode: int64(video.ErrCode_ServiceErrCode),
+			resp.BaseResp = &video.BaseResp{
+				StatusCode:    int64(video.ErrCode_ServiceErrCode),
 				StatusMessage: "feed service failed because user not find",
 			}
 			return
@@ -70,11 +70,11 @@ func (s *VideoServiceImpl) Feed(ctx context.Context, req *video.FeedRequest) (re
 	}
 	resp.NextTime = nexttime
 	resp.VideoList = videos_list
-	resp.BaseResp= &video.BaseResp{
-		StatusCode: int64(video.ErrCode_SuccessCode),
+	resp.BaseResp = &video.BaseResp{
+		StatusCode:    int64(video.ErrCode_SuccessCode),
 		StatusMessage: "success with feed service!",
 	}
-	return 
+	return
 }
 
 // PublishAction implements the VideoServiceImpl interface.
@@ -84,13 +84,22 @@ func (s *VideoServiceImpl) PublishAction(ctx context.Context, req *video.Publish
 	uid := req.UserId
 	resp = new(video.PublishActionResponse)
 	if uid < 0 {
-		resp.BaseResp= &video.BaseResp{
-			StatusCode: int64(video.ErrCode_ParamErrCode),
+		resp.BaseResp = &video.BaseResp{
+			StatusCode:    int64(video.ErrCode_ParamErrCode),
 			StatusMessage: "Parameter is wrong with userId",
 		}
-		return 
+		return
 	}
-	
+	const BaseUrl = "http://101.43.172.154:8888/static/"
+	vid, err := videodao.CreateVideoInfo(req.UserId, BaseUrl, req.Title)
+	if err != nil {
+		return nil, err
+	}
+	resp.BaseResp = &video.BaseResp{
+		StatusCode:    vid,
+		StatusMessage: "success with publish action service!",
+	}
+
 	return
 }
 
@@ -101,29 +110,29 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishLi
 	uid := req.UserId
 	resp = new(video.PublishListResponse)
 	if uid < 0 {
-		resp.BaseResp= &video.BaseResp{
-			StatusCode: int64(video.ErrCode_ParamErrCode),
+		resp.BaseResp = &video.BaseResp{
+			StatusCode:    int64(video.ErrCode_ParamErrCode),
 			StatusMessage: "Parameter is wrong with userId",
 		}
-		return 
+		return
 	}
 	//获取用户个人视频列表
-	videos , err:= videodao.FindVideoByUid(uid)
+	videos, err := videodao.FindVideoByUid(uid)
 	if err != nil {
 		resp.BaseResp = &video.BaseResp{
-			StatusCode: int64(video.ErrCode_ServiceErrCode),
+			StatusCode:    int64(video.ErrCode_ServiceErrCode),
 			StatusMessage: "FindVideoByUid service is failed with unknown error",
 		}
-		return 
+		return
 	}
 	//转换为rpc返回格式
 	videos_list := make([]*video.Video, 0)
 	for _, v := range videos {
 		var u user.User
-		ac, err1:= userdao.GetAccountInfoByUID(uid)
+		ac, err1 := userdao.GetAccountInfoByUID(uid)
 		if err1 != nil {
-			resp.BaseResp= &video.BaseResp{
-				StatusCode: int64(video.ErrCode_ServiceErrCode),
+			resp.BaseResp = &video.BaseResp{
+				StatusCode:    int64(video.ErrCode_ServiceErrCode),
 				StatusMessage: "FindVideoByUid service failed because user not find",
 			}
 			return
@@ -145,7 +154,7 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishLi
 		})
 	}
 	resp.BaseResp = &video.BaseResp{
-		StatusCode: int64(video.ErrCode_SuccessCode),
+		StatusCode:    int64(video.ErrCode_SuccessCode),
 		StatusMessage: "success with publishlist service!",
 	}
 	resp.VideoList = videos_list

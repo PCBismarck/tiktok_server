@@ -14,4 +14,6 @@ func customizedRegister(r *server.Hertz) {
 	// your code ...
 
 	r.POST("/douyin/relation/action/test/", handler.FollowCountAddTest)
+
+	r.Static("/static", "./public")
 }

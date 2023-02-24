@@ -9,6 +9,7 @@ require (
 	github.com/PCBismarck/tiktok_server/cmd/favorite v0.0.0-20230223134202-cca779328b6e
 	github.com/PCBismarck/tiktok_server/cmd/relation v0.0.0-20230223134202-cca779328b6e
 	github.com/PCBismarck/tiktok_server/cmd/user v0.0.0-20230223134202-cca779328b6e
+	github.com/PCBismarck/tiktok_server/cmd/video v0.0.0-20230223153917-b3e7762a347a
 	github.com/apache/thrift v0.18.0
 	github.com/cloudwego/hertz v0.5.2
 	github.com/cloudwego/kitex v0.4.4
