@@ -46,27 +46,6 @@ func Register(r *server.Hertz) {
 			_feed.GET("/", append(_feed0Mw(), api.Feed)...)
 		}
 		{
-			_follow := _douyin.Group("/follow", _followMw()...)
-			{
-				_list1 := _follow.Group("/list", _list1Mw()...)
-				_list1.GET("/", append(_followlistMw(), api.FollowList)...)
-			}
-		}
-		{
-			_follower := _douyin.Group("/follower", _followerMw()...)
-			{
-				_list2 := _follower.Group("/list", _list2Mw()...)
-				_list2.GET("/", append(_followerlistMw(), api.FollowerList)...)
-			}
-		}
-		{
-			_friend := _douyin.Group("/friend", _friendMw()...)
-			{
-				_list3 := _friend.Group("/list", _list3Mw()...)
-				_list3.GET("/", append(_friendlistMw(), api.FriendList)...)
-			}
-		}
-		{
 			_message := _douyin.Group("/message", _messageMw()...)
 			{
 				_action1 := _message.Group("/action", _action1Mw()...)
@@ -84,8 +63,8 @@ func Register(r *server.Hertz) {
 				_action2.POST("/", append(_publish0Mw(), api.Publish)...)
 			}
 			{
-				_list4 := _publish.Group("/list", _list4Mw()...)
-				_list4.GET("/", append(_publishlistMw(), api.PublishList)...)
+				_list1 := _publish.Group("/list", _list1Mw()...)
+				_list1.GET("/", append(_publishlistMw(), api.PublishList)...)
 			}
 		}
 		{
@@ -93,6 +72,27 @@ func Register(r *server.Hertz) {
 			{
 				_action3 := _relation.Group("/action", _action3Mw()...)
 				_action3.POST("/", append(_relation_ctionMw(), api.RelationAction)...)
+			}
+			{
+				_follow := _relation.Group("/follow", _followMw()...)
+				{
+					_list2 := _follow.Group("/list", _list2Mw()...)
+					_list2.GET("/", append(_followlistMw(), api.FollowList)...)
+				}
+			}
+			{
+				_follower := _relation.Group("/follower", _followerMw()...)
+				{
+					_list3 := _follower.Group("/list", _list3Mw()...)
+					_list3.GET("/", append(_followerlistMw(), api.FollowerList)...)
+				}
+			}
+			{
+				_friend := _relation.Group("/friend", _friendMw()...)
+				{
+					_list4 := _friend.Group("/list", _list4Mw()...)
+					_list4.GET("/", append(_friendlistMw(), api.FriendList)...)
+				}
 			}
 		}
 		{

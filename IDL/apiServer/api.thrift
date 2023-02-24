@@ -26,9 +26,9 @@ service Interaction{
 service Relation{
     // extra apis - II
     relation.RelationActionResponse RelationAction(1: relation.RelationActionRequest req) (api.post="/douyin/relation/action/") 
-    relation.RelationFollowerListResponse FollowList(1: relation.RelationFollowListRequest req) (api.get="/douyin/follow/list/")
-    relation.RelationFollowerListResponse FollowerList(1: relation.RelationFollowerListRequest req) (api.get="/douyin/follower/list/")
-    relation.RelationFriendListResponse FriendList(1: relation.RelationFriendListRequest req) (api.get="/douyin/friend/list/")
+    relation.RelationFollowerListResponse FollowList(1: relation.RelationFollowListRequest req) (api.get="/douyin/relation/follow/list/")
+    relation.RelationFollowerListResponse FollowerList(1: relation.RelationFollowerListRequest req) (api.get="/douyin/relation/follower/list/")
+    relation.RelationFriendListResponse FriendList(1: relation.RelationFriendListRequest req) (api.get="/douyin/relation/friend/list/")
     relation.MessageChatResponse MessageChatList(1: relation.MessageChatRequest req) (api.get="/douyin/message/chat/")
     relation.MessageActionResponse MessageAction(1: relation.MessageActionRequest req) (api.post="/douyin/message/action/")    
 }
