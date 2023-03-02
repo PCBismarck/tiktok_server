@@ -1,6 +1,24 @@
 # tiktok_server
-简易的抖音服务器
+简易的抖音服务器<br/>
+## 技术架构
+| Service Name | Usage                                   | Framework   | Protocol | Path                       | IDL                | database    |
+| ------------ | --------------------------------------- | ----------- | -------- | -------------------------- | ------------------ | ----------- |
+| api          | http interface                          | Hertz/Kitex | Thrift   | tiktok_server/cmd/api      | IDL/apiServer      |             |
+| user         | user data management                    | Kitex/gorm  | Thrift   | tiktok_server/cmd/user     | IDL/userServer     | MySQL       |
+| video        | video(feed) management                  | Kitex/gorm  | Thrift   | tiktok_server/cmd/video    | IDL/videoServer    | MySQL       |
+| relation     | relation(follow&friend) data management | Kitex       | Thrift   | tiktok_server/cmd/relation | IDL/relationServer | Dgraph      |
+| favorite     | video favorite data management          | Kitex/gorm  | Thrift   | tiktok_server/cmd/favorite | IDL/favoriteServer | MySQL&Redis |
+| comment      | comment data management                 | Kitex/gorm  | Thrift   | tiktok_server/cmd/comment  | IDL/commentServer  | MySQL       |
 
+## 基本功能
+用户：注册、登录、获取用户信息<br/>
+视频：上传视频、获取feed流<br/>
+关系：支持对用户的关注、取关操作，互关用户互为好友<br/>
+点赞：支持对视频的点赞、取消操作<br/>
+评论：支持对视频的评论操作
+
+
+-开发注意事项--------------------------------------------------------------
 ## 如何加入新的微服务：
 1. 在**IDL**文件夹下创建新的服务文件夹，存放thrift文件
 2. 在**cmd**文件夹下创建新的服务文件夹，存放可运行程序
